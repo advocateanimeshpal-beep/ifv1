@@ -16,7 +16,6 @@
       --walnut-light: #C29B7F;
       --warm-gray: #12100E;
       --text-muted: #A8A29E;
-      --red: #A94442;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -26,7 +25,6 @@
       color: var(--cream);
       overflow-x: hidden;
     }
-
     a, button { cursor: pointer; }
 
     /* TOP BAR */
@@ -72,7 +70,6 @@
       font-weight: 400;
     }
     .logo span { color: var(--walnut); }
-    
     .nav-links { display: flex; gap: 40px; list-style: none; }
     .nav-links a {
       color: var(--text-muted);
@@ -84,6 +81,54 @@
     }
     .nav-links a:hover, .nav-links a.active { color: var(--cream); }
 
+    /* LOADING STATE */
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      gap: 24px;
+      transition: opacity 0.6s;
+    }
+    .loading-overlay.hidden { opacity: 0; pointer-events: none; }
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(139,99,71,0.2);
+      border-top-color: var(--walnut-light);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-text {
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* ERROR STATE */
+    .error-state {
+      display: none;
+      max-width: 500px;
+      margin: 100px auto;
+      text-align: center;
+      padding: 0 40px;
+    }
+    .error-state.visible { display: block; }
+    .error-icon { font-size: 40px; margin-bottom: 20px; opacity: 0.4; }
+    .error-state h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 300;
+      margin-bottom: 12px;
+    }
+    .error-state p { font-size: 12px; color: var(--text-muted); line-height: 1.8; }
+
     /* PRODUCT CONTAINER */
     .detail-container {
       max-width: 1400px;
@@ -92,14 +137,18 @@
       display: grid;
       grid-template-columns: 1.1fr 0.9fr;
       gap: 80px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s, transform 0.6s;
+    }
+    .detail-container.visible {
+      opacity: 1;
+      transform: none;
     }
 
-    /* LEFT: Product Gallery */
-    .gallery-wrap {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
+    /* LEFT: Gallery */
+    .gallery-wrap { display: flex; flex-direction: column; gap: 16px; }
+
     .main-image-box {
       background: var(--warm-gray);
       border: 1px solid rgba(139,99,71,0.08);
@@ -116,9 +165,48 @@
       object-fit: cover;
       transition: transform 0.6s ease;
     }
-    .main-image-box:hover img {
-      transform: scale(1.04);
+    .main-image-box:hover img { transform: scale(1.04); }
+
+    /* Image skeleton loader */
+    .img-skeleton {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg,
+        rgba(139,99,71,0.05) 0%,
+        rgba(139,99,71,0.12) 50%,
+        rgba(139,99,71,0.05) 100%
+      );
+      background-size: 200% 100%;
+      animation: shimmer 1.8s infinite;
     }
+    @keyframes shimmer { to { background-position: -200% 0; } }
+    .img-skeleton.loaded { display: none; }
+
+    /* Prev/Next nav for multiple images */
+    .gallery-nav {
+      display: none;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .gallery-nav.visible { display: flex; }
+    .gallery-nav-btn {
+      flex: 1;
+      padding: 10px;
+      background: rgba(139,99,71,0.1);
+      border: 1px solid rgba(139,99,71,0.2);
+      color: var(--walnut-light);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .gallery-nav-btn:hover { background: var(--walnut); color: var(--cream); }
+    .gallery-nav-btn:disabled { opacity: 0.3; pointer-events: none; }
 
     /* BREADCRUMB */
     .breadcrumb {
@@ -130,6 +218,7 @@
       text-transform: uppercase;
       color: var(--text-muted);
       margin-bottom: 20px;
+      flex-wrap: wrap;
     }
     .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.3s; }
     .breadcrumb a:hover { color: var(--walnut-light); }
@@ -137,10 +226,8 @@
     .breadcrumb .current { color: var(--walnut-light); }
 
     /* RIGHT: Product Info */
-    .info-wrap {
-      display: flex;
-      flex-direction: column;
-    }
+    .info-wrap { display: flex; flex-direction: column; }
+
     .back-btn {
       align-self: flex-start;
       display: inline-flex;
@@ -155,8 +242,8 @@
       transition: color 0.3s;
     }
     .back-btn:hover { color: var(--cream); }
-    .back-btn svg { transition: transform 0.3s; }
     .back-btn:hover svg { transform: translateX(-4px); }
+    .back-btn svg { transition: transform 0.3s; }
 
     .id-badge {
       align-self: flex-start;
@@ -188,6 +275,7 @@
       padding-bottom: 20px;
     }
     .prod-price .currency { font-size: 18px; color: var(--text-muted); margin-right: 2px; }
+    .prod-price .na { font-size: 18px; color: var(--text-muted); }
 
     .prod-desc {
       font-size: 13px;
@@ -197,10 +285,8 @@
       margin-bottom: 32px;
     }
 
-    /* Interactive Selectors */
-    .selector-section {
-      margin-bottom: 28px;
-    }
+    /* Selectors */
+    .selector-section { margin-bottom: 28px; }
     .selector-title {
       font-size: 10px;
       letter-spacing: 0.2em;
@@ -210,11 +296,7 @@
       font-weight: 600;
     }
 
-    /* Size selector buttons */
-    .size-group {
-      display: flex;
-      gap: 12px;
-    }
+    .size-group { display: flex; gap: 12px; flex-wrap: wrap; }
     .size-btn {
       padding: 12px 24px;
       background: transparent;
@@ -226,22 +308,10 @@
       text-transform: uppercase;
       transition: all 0.3s;
     }
-    .size-btn:hover {
-      border-color: var(--walnut);
-      color: var(--cream);
-    }
-    .size-btn.active {
-      background: var(--walnut);
-      border-color: var(--walnut);
-      color: var(--cream);
-    }
+    .size-btn:hover { border-color: var(--walnut); color: var(--cream); }
+    .size-btn.active { background: var(--walnut); border-color: var(--walnut); color: var(--cream); }
 
-    /* Color Swatches */
-    .color-group {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-    }
+    .color-group { display: flex; gap: 16px; align-items: center; }
     .color-swatch {
       width: 28px;
       height: 28px;
@@ -249,19 +319,12 @@
       border: 2px solid transparent;
       outline: 1px solid rgba(139,99,71,0.2);
       transition: all 0.3s;
-      position: relative;
     }
-    .color-swatch:hover {
-      outline-color: var(--cream);
-    }
-    .color-swatch.active {
-      border-color: var(--dark);
-      outline: 2px solid var(--walnut-light);
-    }
-    .color-swatch.grey { background: #5A5D64; }
-    .color-swatch.white { background: #ECECEC; }
+    .color-swatch:hover { outline-color: var(--cream); }
+    .color-swatch.active { border-color: var(--dark); outline: 2px solid var(--walnut-light); }
+    .color-swatch.grey   { background: #5A5D64; }
+    .color-swatch.white  { background: #ECECEC; }
     .color-swatch.walnut { background: #553E2D; }
-
     .color-name-display {
       font-size: 10px;
       letter-spacing: 0.15em;
@@ -269,32 +332,23 @@
       color: var(--text-muted);
     }
 
-    /* Specifications Table */
+    /* Specs */
     .specs-table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
       margin-bottom: 40px;
     }
-    .specs-table tr {
-      border-bottom: 1px solid rgba(139,99,71,0.08);
-    }
-    .specs-table td {
-      padding: 14px 0;
-      font-size: 11px;
-      letter-spacing: 0.1em;
-    }
+    .specs-table tr { border-bottom: 1px solid rgba(139,99,71,0.08); }
+    .specs-table td { padding: 14px 0; font-size: 11px; letter-spacing: 0.1em; }
     .specs-table td.label {
       color: var(--text-muted);
       text-transform: uppercase;
       width: 40%;
     }
-    .specs-table td.val {
-      color: var(--cream);
-      font-weight: 400;
-    }
+    .specs-table td.val { color: var(--cream); }
 
-    /* Enquire Button */
+    /* CTA */
     .enquire-action-btn {
       width: 100%;
       padding: 18px;
@@ -313,12 +367,7 @@
       gap: 12px;
       text-decoration: none;
     }
-    .enquire-action-btn:hover {
-      background: var(--cream);
-      color: var(--dark);
-    }
-
-
+    .enquire-action-btn:hover { background: var(--cream); color: var(--dark); }
 
     /* FOOTER */
     footer {
@@ -335,22 +384,9 @@
     }
     .footer-brand .logo { font-size: 24px; display: inline-block; margin-bottom: 20px; }
     .footer-brand p { font-size: 11px; line-height: 1.8; color: var(--text-muted); max-width: 320px; }
-    .footer-heading {
-      font-size: 10px;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--cream);
-      margin-bottom: 24px;
-      font-weight: 600;
-    }
+    .footer-heading { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--cream); margin-bottom: 24px; font-weight: 600; }
     .footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
-    .footer-links a {
-      font-size: 11px;
-      color: var(--text-muted);
-      text-decoration: none;
-      letter-spacing: 0.05em;
-      transition: color 0.3s;
-    }
+    .footer-links a { font-size: 11px; color: var(--text-muted); text-decoration: none; letter-spacing: 0.05em; transition: color 0.3s; }
     .footer-links a:hover { color: var(--cream); }
     .footer-bottom {
       max-width: 1400px;
@@ -365,28 +401,29 @@
     }
 
     @media (max-width: 1024px) {
-      .detail-container {
-        grid-template-columns: 1fr;
-        gap: 40px;
-        padding: 0 40px;
-      }
-      .topbar { padding: 12px 40px; }
-      .nav { padding: 0 40px; }
+      .detail-container { grid-template-columns: 1fr; gap: 40px; padding: 0 40px; }
+      .topbar, .nav { padding-left: 40px; padding-right: 40px; }
       footer { padding: 80px 40px 40px; }
       .footer-inner { grid-template-columns: 1fr 1fr; gap: 40px; }
     }
     @media (max-width: 600px) {
       .topbar { display: none; }
       .nav-links { display: none; }
+      .nav { padding: 0 20px; }
       .detail-container { padding: 0 20px; margin-top: 30px; }
+      .prod-name { font-size: 32px; }
       footer { padding: 60px 20px 40px; }
       .footer-inner { grid-template-columns: 1fr; gap: 40px; }
-      .sheet-config-panel { padding: 0 20px; }
-      .sheet-config-form { flex-direction: column; }
     }
   </style>
 </head>
 <body>
+
+  <!-- LOADING OVERLAY -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Loading Product</div>
+  </div>
 
   <!-- TOP BAR -->
   <div class="topbar">
@@ -407,96 +444,94 @@
   </nav>
 
   <!-- PRODUCT CONTAINER -->
-  <main class="detail-container">
-    
+  <main class="detail-container" id="detailContainer">
+
     <!-- LEFT: Gallery -->
     <div class="gallery-wrap">
       <div class="main-image-box">
-        <img id="productImg" src="https://images.unsplash.com/photo-1505693314120-0d443867891c?w=900&q=80" alt="Bed Picture">
+        <div class="img-skeleton" id="imgSkeleton"></div>
+        <img id="productImg" src="" alt="Bed" style="opacity:0; transition: opacity 0.4s;">
+      </div>
+      <!-- Prev / Next for navigating between all bed IDs -->
+      <div class="gallery-nav" id="galleryNav">
+        <button class="gallery-nav-btn" id="prevBtn" onclick="navigateProduct(-1)">
+          <svg width="12" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M14 5H2M7 1L2 5l5 4"/>
+          </svg>
+          Previous
+        </button>
+        <button class="gallery-nav-btn" id="nextBtn" onclick="navigateProduct(1)">
+          Next
+          <svg width="12" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M0 5h12M7 1l5 4-5 4"/>
+          </svg>
+        </button>
       </div>
     </div>
 
-    <!-- RIGHT: Info & Purchase specs -->
+    <!-- RIGHT: Info -->
     <div class="info-wrap">
-      <div class="breadcrumb" id="productBreadcrumbs">
+
+      <div class="breadcrumb">
         <a href="index.html">Home</a>
         <span class="sep">·</span>
         <a href="categories.html">Category</a>
         <span class="sep">·</span>
-        <a href="categories.html?category=domestic" id="breadcrumbCat">Domestic Furniture</a>
+        <a href="categories.html?category=domestic">Domestic Furniture</a>
         <span class="sep">·</span>
-        <a href="categories.html?category=domestic&subcategory=bed" id="breadcrumbSubcat">Bed</a>
+        <a href="categories.html?category=domestic&subcategory=bed">Bed</a>
         <span class="sep">·</span>
-        <span class="current" id="breadcrumbName">Maharaja Bed</span>
+        <span class="current" id="breadcrumbName">—</span>
       </div>
 
-      <a href="categories.html" class="back-btn" id="backToCollectionsBtn">
-        <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5" style="transform: rotate(180deg)">
+      <a href="categories.html?category=domestic&subcategory=bed" class="back-btn" id="backBtn">
+        <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5" style="transform:rotate(180deg)">
           <path d="M0 5h12M7 1l5 4-5 4"/>
         </svg>
         Back to Collections
       </a>
 
       <div class="id-badge" id="productID">BED-000</div>
-      <h1 class="prod-name" id="productName">Loading Bed Details...</h1>
-      <div class="prod-price" id="productPrice"><span class="currency">₹</span>0</div>
+      <h1 class="prod-name" id="productName">—</h1>
+      <div class="prod-price" id="productPrice"><span class="na">On Enquiry</span></div>
 
       <p class="prod-desc" id="productDesc">
-        Loading the fine details of this handcrafted masterwork...
+        Handcrafted to timeless perfection. A masterwork of solid wood joinery and artisan finishing — built for generations.
       </p>
 
-      <!-- Color Selector -->
+      <!-- Color -->
       <div class="selector-section">
         <div class="selector-title">Select Color</div>
         <div class="color-group">
-          <button class="color-swatch grey active" onclick="selectColor(this, 'Grey')" title="Grey"></button>
-          <button class="color-swatch white" onclick="selectColor(this, 'White')" title="White"></button>
-          <button class="color-swatch walnut" onclick="selectColor(this, 'Walnut')" title="Walnut"></button>
+          <button class="color-swatch grey active" onclick="selectColor(this,'Grey')" title="Grey"></button>
+          <button class="color-swatch white" onclick="selectColor(this,'White')" title="White"></button>
+          <button class="color-swatch walnut" onclick="selectColor(this,'Walnut')" title="Walnut"></button>
           <span class="color-name-display" id="colorNameDisplay">Grey</span>
         </div>
       </div>
 
-      <!-- Size Selector -->
+      <!-- Size -->
       <div class="selector-section">
         <div class="selector-title">Select Size</div>
         <div class="size-group">
-          <button class="size-btn active" onclick="selectSize(this, 'Queen')">Queen Size</button>
-          <button class="size-btn" onclick="selectSize(this, 'King')">King Size</button>
+          <button class="size-btn active" onclick="selectSize(this,'Queen')">Queen Size</button>
+          <button class="size-btn" onclick="selectSize(this,'King')">King Size</button>
         </div>
       </div>
 
-      <!-- Specifications -->
+      <!-- Specs -->
       <table class="specs-table">
         <tbody>
-          <tr>
-            <td class="label">Dimensions</td>
-            <td class="val" id="specSize">Queen Size: 5 x 6.5 ft</td>
-          </tr>
-          <tr>
-            <td class="label">Bed Height</td>
-            <td class="val" id="specHeight">17 inches</td>
-          </tr>
-          <tr>
-            <td class="label">Mattress Fit</td>
-            <td class="val" id="specMattress">Width 5 inch mattress compatibility</td>
-          </tr>
-          <tr>
-            <td class="label">Headboard Height</td>
-            <td class="val" id="specHeadboard">21 inches</td>
-          </tr>
-          <tr>
-            <td class="label">Material</td>
-            <td class="val" id="specMaterial">Premium Solid Wood</td>
-          </tr>
-          <tr>
-            <td class="label">Style</td>
-            <td class="val" id="specStyle">Heritage Classic</td>
-          </tr>
+          <tr><td class="label">Dimensions</td>   <td class="val" id="specSize">Queen Size: 5 × 6.5 ft</td></tr>
+          <tr><td class="label">Bed Height</td>    <td class="val" id="specHeight">17 inches</td></tr>
+          <tr><td class="label">Mattress Fit</td>  <td class="val" id="specMattress">5 inch mattress compatibility</td></tr>
+          <tr><td class="label">Headboard</td>     <td class="val" id="specHeadboard">21 inches</td></tr>
+          <tr><td class="label">Material</td>      <td class="val" id="specMaterial">Premium Solid Wood</td></tr>
+          <tr><td class="label">Style</td>         <td class="val" id="specStyle">Heritage Classic</td></tr>
         </tbody>
       </table>
 
-      <!-- Enquire button (updates dynamically based on selections) -->
-      <a href="mailto:InternatinalFurnishers@gmail.com" class="enquire-action-btn" id="enquireBtn">
+      <a href="#" class="enquire-action-btn" id="enquireBtn">
         <span>Enquire Now</span>
         <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M0 5h12M7 1l5 4-5 4"/>
@@ -506,7 +541,14 @@
     </div>
   </main>
 
-
+  <!-- ERROR STATE -->
+  <div class="error-state" id="errorState">
+    <div class="error-icon">◻</div>
+    <h2>Product Not Found</h2>
+    <p>This product could not be loaded from our catalogue.<br>Please check back later or browse our collections.</p>
+    <br>
+    <a href="categories.html" style="color: var(--walnut-light); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;">← Back to Collections</a>
+  </div>
 
   <!-- FOOTER -->
   <footer>
@@ -536,7 +578,7 @@
       </div>
       <div>
         <div class="footer-heading">Contact</div>
-        <ul class="footer-links" style="color: var(--text-muted); font-size: 11px;">
+        <ul class="footer-links" style="color:var(--text-muted); font-size:11px;">
           <li>A-10, Kirti Nagar Industrial Area, Phase II</li>
           <li>New Delhi, DL 110015</li>
           <li>Email: InternatinalFurnishers@gmail.com</li>
@@ -551,251 +593,237 @@
   </footer>
 
   <script>
-    // Sticky Nav Scroll effect
-    const nav = document.getElementById('mainNav');
-    window.addEventListener('scroll', () => {
-      if(window.scrollY > 40) { nav.classList.add('scrolled'); }
-      else { nav.classList.remove('scrolled'); }
-    });
+    // ─── CONFIG ───────────────────────────────────────────────
+    // Replace with your deployed Apps Script Web App URL
+    // (from: Extensions → Apps Script → Deploy → New deployment → Web app)
+    const DRIVE_API_URL = localStorage.getItem('ifDriveApiUrl') ||
+      'YOUR_APPS_SCRIPT_URL_HERE';
 
-    // Default Fallback Database
-    const defaultBeds = [
-      {
-        id: "BED-MAHARAJA",
-        name: "Maharaja Bed",
-        image: "https://images.unsplash.com/photo-1505693314120-0d443867891c?w=900&q=80",
-        price: 112000,
-        material: "Teak Wood",
-        style: "Royal Heritage",
-        description: "Behold the majesty of the Maharaja Bed. Handcrafted from generations-old solid teakwood logs, it features deep, intricate floral and medallion carvings along its high headboard. Standard built with extreme care, structural reinforcements ensure structural lifetime stability."
-      },
-      {
-        id: "BED-IMPERIAL",
-        name: "Imperial Bedside Table / Bed",
-        image: "https://images.unsplash.com/photo-1532372320978-9b4d7a92b24d?w=900&q=80",
-        price: 18000,
-        material: "Solid Teak",
-        style: "Classic Heritage",
-        description: "Part of our imperial bedroom collection. Designed with vintage accents, custom-milled brass pull hardware, and solid wood drawer slides. Built to complement the Maharaja or Regency series seamlessly."
-      },
-      {
-        id: "BED-ROYAL",
-        name: "Almirah Royale Bed Frame",
-        image: "https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=900&q=80",
-        price: 76000,
-        material: "Sheesham Wood",
-        style: "Royal Contemporary",
-        description: "A gorgeous premium bed frame crafted with sheesham hardwood grids. The headboard displays natural grain variations beautifully. Standard with hidden storage compartments and a modern platform styling."
-      }
-    ];
+    const EMAIL = 'InternatinalFurnishers@gmail.com';
 
-    let currentBed = defaultBeds[0];
-    let selectedSize = 'Queen';
+    // ─── STATE ────────────────────────────────────────────────
+    let allProducts = [];   // Full list from Drive
+    let currentIndex = 0;   // Index in allProducts
+    let currentProduct = null;
+    let selectedSize  = 'Queen';
     let selectedColor = 'Grey';
 
-    // Interactive Size Switcher
-    function selectSize(btnEl, size) {
-      document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
-      btnEl.classList.add('active');
-      selectedSize = size;
-      
-      const specSize = document.getElementById('specSize');
-      if (size === 'Queen') {
-        specSize.textContent = "Queen Size: 5 x 6.5 ft";
-      } else {
-        specSize.textContent = "King Size: 6 x 6.5 ft";
+    // ─── NAV SCROLL ──────────────────────────────────────────
+    const nav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // ─── HELPERS ─────────────────────────────────────────────
+    function parseFileName(fileName) {
+      const base  = fileName.replace(/\.[^.]+$/, '');
+      const parts = base.split('_');
+      return {
+        id:       (parts[0] || '').trim().toUpperCase(),
+        name:     (parts[1] || humanizeName(parts[0])).trim(),
+        price:    parts[2] ? parseInt(parts[2].trim()) || 0 : 0,
+        material: (parts[3] || 'Premium Solid Wood').trim(),
+        style:    (parts[4] || 'Heritage Classic').trim(),
+      };
+    }
+
+    function humanizeName(id) {
+      return (id || '').replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    }
+
+    function formatPrice(price) {
+      if (!price || price === 0) return '<span class="na">On Enquiry</span>';
+      return '<span class="currency">₹</span>' + price.toLocaleString('en-IN');
+    }
+
+    // ─── RENDER ──────────────────────────────────────────────
+    function renderProduct(p, index) {
+      currentProduct = p;
+      currentIndex   = index;
+
+      document.getElementById('productID').textContent   = p.id;
+      document.getElementById('productName').textContent = p.name;
+      document.getElementById('productPrice').innerHTML  = formatPrice(p.price);
+      document.getElementById('specMaterial').textContent = p.material;
+      document.getElementById('specStyle').textContent    = p.style;
+      document.getElementById('breadcrumbName').textContent = p.name;
+      document.title = p.name + ' — International Furnishers';
+
+      // Image with shimmer → fade in
+      const img = document.getElementById('productImg');
+      const skeleton = document.getElementById('imgSkeleton');
+      img.style.opacity = '0';
+      skeleton.classList.remove('loaded');
+
+      img.onload = () => {
+        img.style.opacity = '1';
+        skeleton.classList.add('loaded');
+      };
+      img.onerror = () => {
+        // Fallback to Unsplash if Drive image fails
+        img.src = 'https://images.unsplash.com/photo-1505693314120-0d443867891c?w=900&q=80';
+        img.style.opacity = '1';
+        skeleton.classList.add('loaded');
+      };
+      img.src = p.imageUrl;
+      img.alt = p.name;
+
+      // Prev/Next navigation
+      if (allProducts.length > 1) {
+        document.getElementById('galleryNav').classList.add('visible');
+        document.getElementById('prevBtn').disabled = (index === 0);
+        document.getElementById('nextBtn').disabled = (index === allProducts.length - 1);
       }
+
+      // Update URL without reload
+      const newUrl = window.location.pathname + '?id=' + encodeURIComponent(p.id);
+      window.history.replaceState({}, '', newUrl);
 
       updateEnquiryLink();
     }
 
-    // Interactive Color Switcher
-    function selectColor(btnEl, color) {
-      document.querySelectorAll('.color-swatch').forEach(btn => btn.classList.remove('active'));
-      btnEl.classList.add('active');
+    function navigateProduct(dir) {
+      const newIndex = currentIndex + dir;
+      if (newIndex < 0 || newIndex >= allProducts.length) return;
+      renderProduct(allProducts[newIndex], newIndex);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ─── SELECTORS ───────────────────────────────────────────
+    function selectSize(btn, size) {
+      document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedSize = size;
+      document.getElementById('specSize').textContent =
+        size === 'Queen' ? 'Queen Size: 5 × 6.5 ft' : 'King Size: 6 × 6.5 ft';
+      updateEnquiryLink();
+    }
+
+    function selectColor(btn, color) {
+      document.querySelectorAll('.color-swatch').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
       selectedColor = color;
-      
       document.getElementById('colorNameDisplay').textContent = color;
       updateEnquiryLink();
     }
 
-    // Update Email Form Action
     function updateEnquiryLink() {
-      const email = "InternatinalFurnishers@gmail.com";
-      const subject = encodeURIComponent(`Product Inquiry: ${currentBed.name} (${currentBed.id})`);
+      if (!currentProduct) return;
+      const p = currentProduct;
+      const subject = encodeURIComponent(`Enquiry: ${p.name} (${p.id})`);
+      const priceStr = p.price > 0 ? '₹ ' + p.price.toLocaleString('en-IN') : 'On Enquiry';
       const body = encodeURIComponent(
         `Dear International Furnishers Team,\n\n` +
-        `I would like to enquire about the following handcrafted bed product:\n\n` +
-        `Product ID: ${currentBed.id}\n` +
-        `Name: ${currentBed.name}\n` +
-        `Selected Size: ${selectedSize} Size\n` +
-        `Selected Color: ${selectedColor}\n` +
-        `Price: ₹ ${currentBed.price.toLocaleString('en-IN')}\n\n` +
-        `Please provide availability, delivery details, and customization options.\n\n` +
+        `I would like to enquire about the following product:\n\n` +
+        `Product ID : ${p.id}\n` +
+        `Name       : ${p.name}\n` +
+        `Size       : ${selectedSize} Size\n` +
+        `Color      : ${selectedColor}\n` +
+        `Price      : ${priceStr}\n` +
+        `Material   : ${p.material}\n\n` +
+        `Please share availability, lead time, and delivery options.\n\n` +
         `Best regards,\n[Your Name]`
       );
-      document.getElementById('enquireBtn').href = `mailto:${email}?subject=${subject}&body=${body}`;
+      document.getElementById('enquireBtn').href = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
     }
 
-    const placeholderBedImages = [
-      "https://images.unsplash.com/photo-1505693314120-0d443867891c?w=700&q=80",
-      "https://images.unsplash.com/photo-1540518614846-7eded433c457?w=700&q=80",
-      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=700&q=80",
-      "https://images.unsplash.com/photo-1531835551805-16d864c8d311?w=700&q=80",
-      "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=700&q=80",
-      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=700&q=80",
-      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=700&q=80",
-      "https://images.unsplash.com/photo-1617806118233-18e1db207f62?w=700&q=80",
-      "https://images.unsplash.com/photo-1618220179428-22790b461013?w=700&q=80",
-      "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=700&q=80"
-    ];
+    // ─── LOAD FROM DRIVE API ──────────────────────────────────
+    async function loadFromDriveApi(targetId) {
+      if (!DRIVE_API_URL || DRIVE_API_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+        return false;
+      }
 
-    const placeholderNames = [
-      "Sleek Platform Bed", "Royal Canopy Bed", "Minimalist Futon Bed", 
-      "Upholstered Wingback Bed", "Tufted Chesterfield Bed", "Scandinavian Oak Bed", 
-      "Modern Storage Bed", "Industrial Iron Bed Frame", "Classic Spindle Bed", 
-      "Japanese Zen Bed", "French Country Cane Bed", "Mid-Century Modern Bed",
-      "Regency Poster Bed", "Venetian Velvet Bed", "Imperial Teak Bed Frame"
-    ];
+      try {
+        const res  = await fetch(DRIVE_API_URL);
+        const data = await res.json();
 
-    const placeholderMaterials = ["teak", "sheesham", "mango", "mdf", "fabric", "metal"];
-    const placeholderStyles = ["classic", "contemporary", "rustic", "minimal", "royal"];
+        if (!data.success || !data.files || data.files.length === 0) return false;
 
-    function parseFileName(fileName) {
-      const baseName = fileName.substring(0, fileName.lastIndexOf('.')) || fileName;
-      const parts = baseName.split('_');
-      
-      const id = parts[0] ? parts[0].trim().toUpperCase() : '';
-      const name = parts[1] ? parts[1].trim() : '';
-      const price = parts[2] ? parseInt(parts[2].trim()) : NaN;
-      const material = parts[3] ? parts[3].trim() : '';
-      const style = parts[4] ? parts[4].trim() : '';
-      
-      return { id, name, price, material, style };
+        // Store full list for prev/next navigation
+        allProducts = data.files;
+
+        // Find the target
+        let targetIndex = allProducts.findIndex(f => f.id === targetId);
+        if (targetIndex === -1) targetIndex = 0; // Fallback to first
+
+        renderProduct(allProducts[targetIndex], targetIndex);
+        return true;
+
+      } catch (err) {
+        console.error('Drive API error:', err);
+        return false;
+      }
     }
 
-    async function loadProduct() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const targetId = (urlParams.get('id') || "BED-001").toUpperCase();
-      
-      const driveApiUrl = localStorage.getItem('bedDriveApiUrl') || 'https://script.google.com/macros/s/AKfycbwYyH9d7N-p5T1w9eN9m4V_g5Y_h-eM_a_g/exec';
-      let productFound = false;
+    // ─── FALLBACK PRODUCT ─────────────────────────────────────
+    function loadFallback(targetId) {
+      // Generate a convincing placeholder so page never breaks
+      const fallbacks = [
+        { id: 'BED-MAHARAJA', name: 'Maharaja Bed',          price: 112000, material: 'Teak Wood',    style: 'Royal Heritage',    imageUrl: 'https://images.unsplash.com/photo-1505693314120-0d443867891c?w=900&q=80' },
+        { id: 'BED-IMPERIAL', name: 'Imperial Bedside Table', price: 18000,  material: 'Solid Teak',   style: 'Classic Heritage',  imageUrl: 'https://images.unsplash.com/photo-1532372320978-9b4d7a92b24d?w=900&q=80' },
+        { id: 'BED-ROYAL',    name: 'Almirah Royale Frame',   price: 76000,  material: 'Sheesham Wood', style: 'Royal Contemporary', imageUrl: 'https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=900&q=80' },
+      ];
 
-      // 1. Try to load from Google Drive API
-      if (driveApiUrl) {
-        try {
-          const res = await fetch(driveApiUrl);
-          const data = await res.json();
-          
-          if (data && data.success && data.files) {
-            const matchedFile = data.files.find(file => {
-              const parsed = parseFileName(file.name);
-              return parsed.id.toUpperCase() === targetId;
-            });
-
-            if (matchedFile) {
-              const parsed = parseFileName(matchedFile.name);
-              const imgUrl = `https://lh3.googleusercontent.com/d/${matchedFile.id}`;
-              
-              currentBed = {
-                id: parsed.id,
-                name: parsed.name || `Synced Bed ${parsed.id}`,
-                image: imgUrl,
-                price: parsed.price || 45000,
-                material: parsed.material || 'Premium Solid Wood',
-                style: parsed.style || 'Contemporary',
-                description: `Handcrafted masterwork loaded from Google Drive folder. Standard built with lifetime durability and custom finishes.`
-              };
-              productFound = true;
-            }
-          }
-        } catch (err) {
-          console.error("Failed fetching Google Drive file list:", err);
-        }
+      let found = fallbacks.find(b => b.id === targetId);
+      if (!found && targetId.startsWith('BED-')) {
+        const num = parseInt(targetId.replace('BED-', '')) || 1;
+        found = {
+          id: targetId,
+          name: 'Heritage Bed No. ' + num,
+          price: 0,
+          material: 'Premium Solid Wood',
+          style: 'Heritage Classic',
+          imageUrl: 'https://images.unsplash.com/photo-1505693314120-0d443867891c?w=900&q=80',
+        };
       }
 
-      // 2. Fallback to Local/Placeholder Database if not found in Google Drive
-      if (!productFound) {
-        // Check if ID is in placeholder format BED-XXX
-        if (targetId.startsWith("BED-")) {
-          const indexStr = targetId.replace("BED-", "");
-          const index = parseInt(indexStr) || 1;
-          
-          const imgUrl = placeholderBedImages[(index - 1) % placeholderBedImages.length];
-          const name = placeholderNames[(index - 1) % placeholderNames.length] + " " + index;
-          const price = 25000 + ((index * 1999) % 175000);
-          const material = placeholderMaterials[(index * 3) % placeholderMaterials.length];
-          const style = placeholderStyles[(index * 2) % placeholderStyles.length];
-          
-          currentBed = {
-            id: targetId,
-            name: name,
-            image: imgUrl,
-            price: price,
-            material: material.charAt(0).toUpperCase() + material.slice(1) + " Wood",
-            style: style.charAt(0).toUpperCase() + style.slice(1),
-            description: `Premium handcrafted solid wood bed frame, tailored to absolute perfection. Designed with a custom headboard and built to last generations.`
-          };
-        } else {
-          // Absolute fallback
-          currentBed = defaultBeds.find(b => b.id.toUpperCase() === targetId) || defaultBeds[0];
-        }
+      if (found) {
+        allProducts = [found];
+        renderProduct(found, 0);
+        return true;
       }
-
-      // Render details
-      document.getElementById('productID').textContent = currentBed.id;
-      document.getElementById('productName').textContent = currentBed.name;
-      document.getElementById('productPrice').innerHTML = `<span class="currency">₹</span>${currentBed.price.toLocaleString('en-IN')}`;
-      document.getElementById('productDesc').textContent = currentBed.description;
-      document.getElementById('productImg').src = currentBed.image;
-      document.getElementById('productImg').alt = currentBed.name;
-      
-      document.getElementById('specMaterial').textContent = currentBed.material;
-      document.getElementById('specStyle').textContent = currentBed.style;
-
-      // Update breadcrumbs dynamically
-      const breadcrumbName = document.getElementById('breadcrumbName');
-      if (breadcrumbName) {
-        breadcrumbName.textContent = currentBed.name;
-      }
-      
-      updateEnquiryLink();
+      return false;
     }
 
-    // Developer Console Helpers for Drive API Configuration
-    window.setDriveApi = function(url) {
-      if (url) {
-        localStorage.setItem('bedDriveApiUrl', url);
-        loadProduct().then(() => {
-          console.log("Success: Google Drive API URL saved and synced!");
-        });
-      } else {
-        console.error("Error: Please provide a valid Apps Script URL.");
+    // ─── INIT ─────────────────────────────────────────────────
+    async function init() {
+      const params   = new URLSearchParams(window.location.search);
+      const targetId = (params.get('id') || 'BED-001').toUpperCase();
+
+      // Smart back button
+      const backBtn = document.getElementById('backBtn');
+      const referrer = document.referrer;
+      if (referrer && referrer.includes('categories.html')) {
+        backBtn.href = referrer;
       }
+
+      const loaded = await loadFromDriveApi(targetId);
+      if (!loaded) {
+        loadFallback(targetId);
+      }
+
+      // Reveal
+      document.getElementById('loadingOverlay').classList.add('hidden');
+      document.getElementById('detailContainer').classList.add('visible');
+    }
+
+    window.addEventListener('DOMContentLoaded', init);
+
+    // ─── DEVELOPER HELPERS ────────────────────────────────────
+    // Run in browser console:
+    //   setDriveApi('https://script.google.com/macros/s/YOUR_ID/exec')
+    //   resetDriveApi()
+    window.setDriveApi = url => {
+      if (!url) return console.error('Provide your Apps Script URL');
+      localStorage.setItem('ifDriveApiUrl', url);
+      console.log('✓ Saved. Reloading...');
+      location.reload();
     };
-
-    window.resetDriveApi = function() {
-      localStorage.removeItem('bedDriveApiUrl');
-      loadProduct().then(() => {
-        console.log("Success: Reset to default public Google Drive folder API.");
-      });
+    window.resetDriveApi = () => {
+      localStorage.removeItem('ifDriveApiUrl');
+      console.log('✓ Reset. Reloading...');
+      location.reload();
     };
-
-    // Page Load
-    window.addEventListener('DOMContentLoaded', () => {
-      loadProduct();
-      
-      // Smart back button referrer logic
-      const backBtn = document.getElementById('backToCollectionsBtn');
-      if (backBtn) {
-        const referrer = document.referrer;
-        if (referrer && referrer.includes('categories.html')) {
-          backBtn.href = referrer;
-        } else {
-          backBtn.href = 'categories.html?category=domestic&subcategory=bed';
-        }
-      }
-    });
   </script>
 </body>
 </html>
