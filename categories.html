@@ -1946,7 +1946,9 @@
 
         const card = document.createElement('div');
         card.className = 'product-card';
-        card.setAttribute('data-cat', 'bedroom');
+        card.setAttribute('data-cat', 'bed');
+        card.setAttribute('data-category', 'domestic');
+        card.setAttribute('data-subcategory', 'bed');
         card.setAttribute('data-id', id);
         card.setAttribute('data-price', price);
         card.setAttribute('data-material', material);
@@ -1964,7 +1966,7 @@
             </div>
           </div>
           <div class="product-info">
-            <div class="product-cat">Bedroom</div>
+            <div class="product-cat">Bed</div>
             <div class="product-name">${name}</div>
             <div class="product-desc">Premium ${material} wood frame &middot; Handcrafted ${style} styling</div>
             <div class="product-footer">
@@ -2111,6 +2113,16 @@
                 existing.setAttribute('data-style', parsed.style);
               }
               
+              // Ensure existing synced cards get updated with the correct categories
+              existing.setAttribute('data-cat', 'bed');
+              existing.setAttribute('data-category', 'domestic');
+              existing.setAttribute('data-subcategory', 'bed');
+
+              const catEl = existing.querySelector('.product-cat');
+              if (catEl) {
+                catEl.textContent = 'BED';
+              }
+              
               const descEl = existing.querySelector('.product-desc');
               if (descEl) {
                 descEl.innerHTML = `Premium ${(parsed.material || existing.getAttribute('data-material') || 'Teak')} Wood &middot; Synced Drive Image`;
@@ -2126,7 +2138,9 @@
               const grid = document.getElementById('productsGrid');
               const card = document.createElement('div');
               card.className = 'product-card';
-              card.setAttribute('data-cat', 'bedroom');
+              card.setAttribute('data-cat', 'bed');
+              card.setAttribute('data-category', 'domestic');
+              card.setAttribute('data-subcategory', 'bed');
               card.setAttribute('data-id', parsed.id);
               card.setAttribute('data-price', parsed.price || 45000);
               card.setAttribute('data-material', parsed.material || 'teak');
@@ -2144,7 +2158,7 @@
                   </div>
                 </div>
                 <div class="product-info">
-                  <div class="product-cat">Bedroom</div>
+                  <div class="product-cat">Bed</div>
                   <div class="product-name">${parsed.name || 'Drive Bed ' + parsed.id}</div>
                   <div class="product-desc">Premium ${(parsed.material || 'Teak')} Wood &middot; Synced Drive Image</div>
                   <div class="product-footer">
