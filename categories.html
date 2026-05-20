@@ -1425,7 +1425,24 @@
       sofa: {
         name: "Sofa",
         image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80",
-        description: "Hand-stitched leather sectionals and high-comfort fabric armchairs."
+        description: "Hand-stitched leather sectionals and high-comfort fabric armchairs.",
+        subcategories: {
+          "l-sofa": {
+            name: "Lsofa",
+            image: "https://images.unsplash.com/photo-1493663284031-b7e3aaa4e5a2?w=700&q=80",
+            description: "Deep luxury modular L-shape sectional sofas."
+          },
+          "3-1-1": {
+            name: "3-1-1",
+            image: "https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=700&q=80",
+            description: "Classic 3-seater sofa paired with two single armchairs."
+          },
+          "3-2-2": {
+            name: "3-2-2",
+            image: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=700&q=80",
+            description: "Premium family size 3-seater sofa with two 2-seater sofas."
+          }
+        }
       },
       mattress: {
         name: "Matteres",
@@ -1574,7 +1591,11 @@
               const sub = catConfig.subcategories[subKey];
               const card = document.createElement('a');
               card.className = 'cat-card reveal visible';
-              card.href = `categories.html?category=${catParam}&subcategory=${subKey}`;
+              if (subKey === 'sofa') {
+                card.href = `categories.html?category=sofa`;
+              } else {
+                card.href = `categories.html?category=${catParam}&subcategory=${subKey}`;
+              }
               card.innerHTML = `
                 <img src="${sub.image}" alt="${sub.name}">
                 <div class="cat-card-overlay">
@@ -1656,8 +1677,16 @@
 
         if (name.includes('sofa') || name.includes('sectional') || name.includes('armchair')) {
           card.setAttribute('data-category', 'sofa');
-          card.setAttribute('data-subcategory', 'sofa');
-          card.setAttribute('data-cat', 'sofa');
+          if (name.includes('sectional') || name.includes('armand')) {
+            card.setAttribute('data-subcategory', 'l-sofa');
+            card.setAttribute('data-cat', 'l-sofa');
+          } else if (name.includes('armchair') || name.includes('lucca')) {
+            card.setAttribute('data-subcategory', '3-1-1');
+            card.setAttribute('data-cat', '3-1-1');
+          } else {
+            card.setAttribute('data-subcategory', '3-2-2');
+            card.setAttribute('data-cat', '3-2-2');
+          }
         } else if (name.includes('bedside') || name.includes('bed') || name.includes('maharaja')) {
           card.setAttribute('data-category', 'domestic');
           card.setAttribute('data-subcategory', 'bed');
@@ -1679,8 +1708,8 @@
       const band = document.querySelector('.featured-band');
       if (band) {
         band.setAttribute('data-category', 'sofa');
-        band.setAttribute('data-subcategory', 'sofa');
-        band.setAttribute('data-cat', 'sofa');
+        band.setAttribute('data-subcategory', 'l-sofa');
+        band.setAttribute('data-cat', 'l-sofa');
       }
     }
 
@@ -1870,6 +1899,9 @@
       // 3. Generate 100 placeholders beds for Bedroom
       generatePlaceholderBeds();
 
+      // 3b. Generate placeholder sofas for Sofa subcategories
+      generatePlaceholderSofas();
+
       // 4. Load from Google Drive Sheet API and then render page
       loadGoogleDriveProducts().then(() => {
         renderDynamicViews();
@@ -1946,6 +1978,86 @@
         `;
         grid.appendChild(card);
       }
+    }
+
+    const sofaSubcatConfig = {
+      "l-sofa": {
+        name: "Lsofa",
+        names: ["Armand Sectional", "Milano L-Shape Sofa", "Tuscany Corner Sectional", "Nordic Modular Sofa", "Vanguard Leather Sectional", "Regency Right-Arm Sofa"],
+        images: [
+          "https://images.unsplash.com/photo-1493663284031-b7e3aaa4e5a2?w=700&q=80",
+          "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=700&q=80",
+          "https://images.unsplash.com/photo-1505693314120-0d443867891c?w=700&q=80"
+        ]
+      },
+      "3-1-1": {
+        name: "3-1-1",
+        names: ["Classic Chesterfield 3-1-1 Set", "Lucca Contemporary 3-1-1", "Royal Palace Sofa Suite", "Imperial Velvet 3-1-1", "Heritage Teak Wood Set", "Urban Lounge Fabric Suite"],
+        images: [
+          "https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=700&q=80",
+          "https://images.unsplash.com/photo-1618220179428-22790b461013?w=700&q=80",
+          "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=700&q=80"
+        ]
+      },
+      "3-2-2": {
+        name: "3-2-2",
+        names: ["Grand Mansion 3-2-2 Suite", "Verona Leather 3-2-2 Set", "Elite Boulevard Sofa Group", "Regency Handcrafted 3-2-2", "Casa Grande Family Set", "Majestic Teak Wood Suite"],
+        images: [
+          "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=700&q=80",
+          "https://images.unsplash.com/photo-1493663284031-b7e3aaa4e5a2?w=700&q=80",
+          "https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=700&q=80"
+        ]
+      }
+    };
+
+    function generatePlaceholderSofas() {
+      const grid = document.getElementById('productsGrid');
+      
+      Object.keys(sofaSubcatConfig).forEach(subcatKey => {
+        const config = sofaSubcatConfig[subcatKey];
+        for (let i = 1; i <= 6; i++) {
+          const id = `SOF-${subcatKey.toUpperCase().replace('-','')}-${String(i).padStart(3, '0')}`;
+          const imgUrl = config.images[(i - 1) % config.images.length];
+          const name = config.names[(i - 1) % config.names.length] + " " + i;
+          const price = 65000 + ((i * 4999) % 185000);
+          const material = placeholderMaterials[(i * 2) % placeholderMaterials.length];
+          const style = placeholderStyles[(i * 3) % placeholderStyles.length];
+
+          const card = document.createElement('div');
+          card.className = 'product-card';
+          card.setAttribute('data-cat', subcatKey);
+          card.setAttribute('data-category', 'sofa');
+          card.setAttribute('data-subcategory', subcatKey);
+          card.setAttribute('data-id', id);
+          card.setAttribute('data-price', price);
+          card.setAttribute('data-material', material);
+          card.setAttribute('data-style', style);
+
+          card.innerHTML = `
+            <div class="product-img-wrap">
+              <img src="${imgUrl}" alt="${name}">
+              <div class="product-badge">Premium</div>
+              <div class="product-actions">
+                <button class="action-btn" title="Wishlist">♡</button>
+                <button class="action-btn" title="Quick View">⊕</button>
+              </div>
+            </div>
+            <div class="product-info">
+              <div class="product-cat">${config.name.toUpperCase()}</div>
+              <div class="product-name">${name}</div>
+              <div class="product-desc">Luxury hand-assembled ${material} frame sofa. Premium upholstery.</div>
+              <div class="product-footer">
+                <div class="product-price"><span class="currency">₹</span>${price.toLocaleString('en-IN')}</div>
+                <a href="mailto:InternatinalFurnishers@gmail.com" class="enquire-btn">
+                  <span>Enquire</span>
+                  <svg width="12" height="8" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M0 4h10M6 1l4 3-4 3"/></svg>
+                </a>
+              </div>
+            </div>
+          `;
+          grid.appendChild(card);
+        }
+      });
     }
 
     function parseFileName(fileName) {
