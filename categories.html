@@ -669,6 +669,169 @@
       .features-strip-inner { flex-wrap: wrap; }
       .feature-item { min-width: 50%; }
     }
+
+    /* PRIMARY & SUB CATEGORY CARDS (Image 2 & 3 styles) */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .cat-card {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4/5;
+      background: var(--warm-gray);
+      border: 1px solid rgba(139,99,71,0.12);
+      transition: border-color 0.4s ease;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .cat-card:hover {
+      border-color: var(--walnut);
+    }
+    .cat-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s ease;
+    }
+    .cat-card:hover img { transform: scale(1.07); }
+    .cat-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(14,12,10,0.92) 0%, rgba(14,12,10,0.3) 60%, transparent 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 36px;
+    }
+    .cat-card-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 64px;
+      font-weight: 300;
+      color: rgba(139,99,71,0.18);
+      line-height: 1;
+      position: absolute;
+      top: 20px; right: 28px;
+    }
+    .cat-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 300;
+      color: var(--cream);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .cat-card p {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+    .cat-card-arrow {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(139,99,71,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 16px;
+      color: var(--walnut-light);
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.35s ease;
+    }
+    .cat-card:hover .cat-card-arrow { opacity: 1; transform: translateY(0); }
+
+    /* DYNAMIC LAYOUT SUPPORT (Image 4 styles) */
+    .level-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 60px 100px;
+    }
+    .page-body.full-width {
+      grid-template-columns: 1fr;
+      padding-top: 20px;
+    }
+    .page-body.full-width .sidebar {
+      display: none;
+    }
+    .page-body.full-width .products-area {
+      padding-top: 20px;
+    }
+    .page-body.full-width .products-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+    }
+
+    /* SUBCATEGORY SELECT DROPDOWN FILTER */
+    .subcategory-filter-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 40px auto 10px;
+      gap: 16px;
+      text-align: center;
+    }
+    .subcategory-filter-label {
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .subcategory-filter-select {
+      background: rgba(14, 12, 10, 0.85);
+      border: 1px solid rgba(139, 99, 71, 0.3);
+      color: var(--cream);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 12px 40px 12px 20px;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5l4 3 4-3' stroke='%23a87d5f' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      transition: all 0.35s ease;
+      min-width: 250px;
+      cursor: pointer;
+    }
+    .subcategory-filter-select:hover, .subcategory-filter-select:focus {
+      border-color: var(--walnut-light);
+      outline: none;
+    }
+
+    @media (max-width: 1200px) {
+      .page-body.full-width .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    @media (max-width: 900px) {
+      .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+      .level-container {
+        padding: 40px 24px 80px;
+      }
+      .page-body.full-width .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+    }
+    @media (max-width: 600px) {
+      .categories-grid {
+        grid-template-columns: 1fr;
+      }
+      .subcategory-filter-container {
+        flex-direction: column;
+        gap: 8px;
+      }
+      .page-body.full-width .products-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
@@ -700,15 +863,37 @@
     <div class="page-hero-overlay"></div>
     <div class="page-hero-grain"></div>
     <div class="page-hero-content">
-      <div class="breadcrumb">
+      <div class="breadcrumb" id="pageBreadcrumbs">
         <a href="index.html">Home</a>
         <span class="sep">·</span>
         <span class="current">Collections</span>
       </div>
-      <h1 class="page-title">Our <em>Collections</em></h1>
-      <p class="page-hero-meta">200+ Unique Designs &nbsp;·&nbsp; Crafted in Lucknow &nbsp;·&nbsp; Since 1998</p>
+      <h1 class="page-title" id="pageHeroTitle">Our <em>Collections</em></h1>
+      <p class="page-hero-meta" id="pageHeroMeta">200+ Unique Designs &nbsp;·&nbsp; Crafted in Lucknow &nbsp;·&nbsp; Since 1998</p>
     </div>
   </section>
+
+  <!-- LEVEL 1: PRIMARY CATEGORIES -->
+  <div id="level1Categories" class="level-container" style="display: none;">
+    <div class="categories-grid" id="level1Grid">
+      <!-- Generated dynamically in JS -->
+    </div>
+  </div>
+
+  <!-- LEVEL 2: SUBCATEGORIES -->
+  <div id="level2Subcategories" class="level-container" style="display: none;">
+    <div class="categories-grid" id="level2Grid">
+      <!-- Generated dynamically in JS -->
+    </div>
+  </div>
+
+  <!-- LEVEL 3: SUBCATEGORY SELECT DROPDOWN -->
+  <div id="level3SubcategoryFilter" class="subcategory-filter-container" style="display: none;">
+    <span class="subcategory-filter-label">Filter Sub Category:</span>
+    <select class="subcategory-filter-select" id="subcategorySelect" onchange="navigateSubcategory(this.value)">
+      <!-- Options generated dynamically -->
+    </select>
+  </div>
 
   <!-- FILTER BAR -->
   <div class="filter-bar" id="filterBar">
@@ -745,7 +930,7 @@
   </div>
 
   <!-- MAIN BODY -->
-  <div class="page-body">
+  <div class="page-body" id="pageBody">
 
     <!-- SIDEBAR -->
     <aside class="sidebar">
@@ -1139,11 +1324,11 @@
       <div>
         <div class="footer-heading">Categories</div>
         <ul class="footer-links">
-          <li><a href="#">Living Room</a></li>
-          <li><a href="#">Bedroom</a></li>
-          <li><a href="#">Dining Room</a></li>
-          <li><a href="#">Home Office</a></li>
-          <li><a href="#">Outdoor</a></li>
+          <li><a href="categories.html?category=sofa">Living Room</a></li>
+          <li><a href="categories.html?category=domestic">Bedroom</a></li>
+          <li><a href="categories.html?category=dining-table">Dining Room</a></li>
+          <li><a href="categories.html?category=office">Home Office</a></li>
+          <li><a href="categories.html">All Collections</a></li>
         </ul>
       </div>
       <div>
@@ -1188,7 +1373,84 @@
       }
     }
 
-    // Interactive Filtering Logic
+    // Interactive Dynamic Router & Categories Configuration
+    const categoriesConfig = {
+      domestic: {
+        name: "Domestic Furniture",
+        image: "https://images.unsplash.com/photo-1505693314120-0d443867891c?w=700&q=80",
+        description: "Exquisite designs of heirloom quality, masterfully crafted for beautiful homes.",
+        subcategories: {
+          almirah: {
+            name: "Almirah",
+            image: "https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=700&q=80",
+            description: "Premium handcrafted wooden almirahs and glass-door wardrobes."
+          },
+          bed: {
+            name: "Bed",
+            image: "https://images.unsplash.com/photo-1505693314120-0d443867891c?w=700&q=80",
+            description: "Luxury solid teak and sheesham wood beds built to outlast generations."
+          },
+          "dining-table": {
+            name: "Dinning Table",
+            image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=700&q=80",
+            description: "Timeless dining tables, vintage credenzas, and custom dining sets."
+          },
+          "dressing-table": {
+            name: "Dressing Table",
+            image: "https://images.unsplash.com/photo-1596162954151-cd5400f607bc?w=700&q=80",
+            description: "Handcrafted dressing tables, vanities, and custom mirror units."
+          },
+          sofa: {
+            name: "Sofa",
+            image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=700&q=80",
+            description: "Deep luxury sofas, armchairs, and modular full-grain leather sectionals."
+          }
+        }
+      },
+      office: {
+        name: "Office Furniture",
+        image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&q=80",
+        description: "Bespoke executive office desks, ergonomic seating, and workspace solutions."
+      },
+      wardrobe: {
+        name: "Wardrobe",
+        image: "https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=800&q=80",
+        description: "Custom walk-in wardrobes, sliding door cupboards, and luxurious solid-wood cabinets."
+      },
+      "dining-table": {
+        name: "Dinning Table",
+        image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80",
+        description: "Premium dining sets, luxury coffee tables, and glass bar cabinets."
+      },
+      sofa: {
+        name: "Sofa",
+        image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80",
+        description: "Hand-stitched leather sectionals and high-comfort fabric armchairs."
+      },
+      mattress: {
+        name: "Matteres",
+        image: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80",
+        description: "Handcrafted comfort and orthopedic support mattresses for restorative sleep."
+      }
+    };
+
+    // Extra Placeholder items to fully populate all pages (Dressing Tables, Wardrobes, Mattresses)
+    const extraPlaceholders = [
+      // Mattresses
+      { category: 'mattress', name: 'Ortho-Support Mattress', img: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=700&q=80', desc: 'Orthopedic memory foam mattress with pocket springs.', price: 22000, material: 'fabric', style: 'minimal' },
+      { category: 'mattress', name: 'ErgoSoft Latex Mattress', img: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=700&q=80', desc: 'Latex comfort layer with temperature control fabric.', price: 28000, material: 'fabric', style: 'contemporary' },
+      { category: 'mattress', name: 'Grand Royale Cushion Top', img: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=700&q=80', desc: 'Ultra-plush pocket spring pillow top organic cotton mattress.', price: 45000, material: 'fabric', style: 'royal' },
+      
+      // Dressing Tables
+      { category: 'domestic', subcategory: 'dressing-table', name: 'Milano Dressing Console', img: 'https://images.unsplash.com/photo-1596162954151-cd5400f607bc?w=700&q=80', desc: 'Sleek dressing console with LED vanity mirror & drawers.', price: 34000, material: 'teak', style: 'contemporary' },
+      { category: 'domestic', subcategory: 'dressing-table', name: 'Aura Vanity Table', img: 'https://images.unsplash.com/photo-1618220179428-22790b461013?w=700&q=80', desc: 'Minimalist solid wood dressing desk with stool.', price: 26000, material: 'sheesham', style: 'minimal' },
+      { category: 'domestic', subcategory: 'dressing-table', name: 'Vintage Imperial Vanity', img: 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=700&q=80', desc: 'Heritage style dressing chest with oval mirror & antique brass hardware.', price: 42000, material: 'teak', style: 'classic' },
+
+      // Almirahs / Wardrobes
+      { category: 'domestic', subcategory: 'almirah', name: 'Classic Wooden Closet', img: 'https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=700&q=80', desc: 'Solid wood wardrobe with internal lock drawers.', price: 58000, material: 'sheesham', style: 'classic' },
+      { category: 'domestic', subcategory: 'almirah', name: 'Nordic Minimalist Cupboard', img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=700&q=80', desc: 'Modern sliding-door wooden cabinet.', price: 48000, material: 'mdf', style: 'minimal' }
+    ];
+
     let currentCategory = 'all';
     let currentPriceLimit = 500000;
     let selectedMaterials = [];
@@ -1206,8 +1468,6 @@
 
     function selectStyle(el, style) {
       const isAlreadyActive = el.classList.contains('active');
-      
-      // Reset active on all styles in list
       el.parentNode.querySelectorAll('.sidebar-item').forEach(item => {
         item.classList.remove('active');
       });
@@ -1224,7 +1484,7 @@
     function filterCategory(el, cat) {
       currentCategory = cat;
 
-      // Sync filter tabs
+      // Sync filter tabs (if visible)
       document.querySelectorAll('.filter-tab').forEach(tab => {
         tab.classList.remove('active');
         if (tab.getAttribute('onclick') && tab.getAttribute('onclick').includes(`'${cat}'`)) {
@@ -1243,6 +1503,230 @@
       applyFilters();
     }
 
+    // Dynamic Level Routing Controller
+    function renderDynamicViews() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const catParam = urlParams.get('category');
+      const subcatParam = urlParams.get('subcategory');
+
+      const level1 = document.getElementById('level1Categories');
+      const level2 = document.getElementById('level2Subcategories');
+      const level3Select = document.getElementById('level3SubcategoryFilter');
+      const filterBar = document.getElementById('filterBar');
+      const pageBody = document.getElementById('pageBody');
+
+      const breadcrumbs = document.getElementById('pageBreadcrumbs');
+      const heroTitle = document.getElementById('pageHeroTitle');
+      const heroMeta = document.getElementById('pageHeroMeta');
+
+      // Hide all levels first
+      level1.style.display = 'none';
+      level2.style.display = 'none';
+      level3Select.style.display = 'none';
+      filterBar.style.display = 'none';
+      pageBody.style.display = 'none';
+      pageBody.classList.remove('full-width');
+
+      if (subcatParam) {
+        // LEVEL 3: View a specific subcategory (e.g. Bed under Domestic Furniture)
+        const catConfig = categoriesConfig[catParam];
+        const subcatConfig = catConfig && catConfig.subcategories ? catConfig.subcategories[subcatParam] : null;
+
+        if (subcatConfig) {
+          heroTitle.innerHTML = `${subcatConfig.name} <em>Collection</em>`;
+          heroMeta.textContent = subcatConfig.description;
+          breadcrumbs.innerHTML = `<a href="index.html">Home</a><span class="sep">·</span><a href="categories.html">Category</a><span class="sep">·</span><a href="categories.html?category=${catParam}">${catConfig.name}</a><span class="sep">·</span><span class="current">${subcatConfig.name}</span>`;
+
+          // Setup subcategory dropdown select options
+          const selectEl = document.getElementById('subcategorySelect');
+          selectEl.innerHTML = `<option value="">--Select any one--</option>`;
+          Object.keys(catConfig.subcategories).forEach(key => {
+            const active = key === subcatParam ? 'selected' : '';
+            selectEl.innerHTML += `<option value="${key}" ${active}>${catConfig.subcategories[key].name}</option>`;
+          });
+
+          // Show dropdown & full-width product grid
+          level3Select.style.display = 'flex';
+          pageBody.style.display = 'grid';
+          pageBody.classList.add('full-width');
+
+          currentCategory = subcatParam;
+        } else {
+          window.location.href = `categories.html?category=${catParam}`;
+        }
+
+      } else if (catParam) {
+        // Check if category has subcategories
+        const catConfig = categoriesConfig[catParam];
+
+        if (catConfig) {
+          if (catConfig.subcategories) {
+            // LEVEL 2: Show subcategories (e.g. Domestic Furniture subcategories)
+            heroTitle.innerHTML = `${catConfig.name}`;
+            heroMeta.textContent = catConfig.description;
+            breadcrumbs.innerHTML = `<a href="index.html">Home</a><span class="sep">·</span><a href="categories.html">Category</a><span class="sep">·</span><span class="current">${catConfig.name}</span>`;
+
+            // Build Level 2 grid dynamically
+            const grid = document.getElementById('level2Grid');
+            grid.innerHTML = '';
+            let numIdx = 1;
+            Object.keys(catConfig.subcategories).forEach(subKey => {
+              const sub = catConfig.subcategories[subKey];
+              const card = document.createElement('a');
+              card.className = 'cat-card reveal visible';
+              card.href = `categories.html?category=${catParam}&subcategory=${subKey}`;
+              card.innerHTML = `
+                <img src="${sub.image}" alt="${sub.name}">
+                <div class="cat-card-overlay">
+                  <div class="cat-card-num">${String(numIdx++).padStart(2, '0')}</div>
+                  <h3>${sub.name}</h3>
+                  <p>Explore Collection</p>
+                  <div class="cat-card-arrow">→</div>
+                </div>
+              `;
+              grid.appendChild(card);
+            });
+
+            level2.style.display = 'block';
+          } else {
+            // LEVEL 3: View category direct product list (no subcategories, e.g. Office)
+            heroTitle.innerHTML = `${catConfig.name} <em>Collection</em>`;
+            heroMeta.textContent = catConfig.description;
+            breadcrumbs.innerHTML = `<a href="index.html">Home</a><span class="sep">·</span><a href="categories.html">Category</a><span class="sep">·</span><span class="current">${catConfig.name}</span>`;
+
+            pageBody.style.display = 'grid';
+            pageBody.classList.add('full-width');
+
+            currentCategory = catParam;
+          }
+        } else {
+          window.location.href = 'categories.html';
+        }
+
+      } else {
+        // LEVEL 1: Browse by primary category (6 cards matching screenshot 2)
+        heroTitle.innerHTML = `Browse by <em>Category</em>`;
+        heroMeta.textContent = `200+ Premium Handcrafted Designs · Lucknow · Since 1998`;
+        breadcrumbs.innerHTML = `<a href="index.html">Home</a><span class="sep">·</span><span class="current">Category</span>`;
+
+        // Build Level 1 grid dynamically
+        const grid = document.getElementById('level1Grid');
+        grid.innerHTML = '';
+        let numIdx = 1;
+        Object.keys(categoriesConfig).forEach(key => {
+          const cat = categoriesConfig[key];
+          const card = document.createElement('a');
+          card.className = 'cat-card reveal visible';
+          card.href = `categories.html?category=${key}`;
+          card.innerHTML = `
+            <img src="${cat.image}" alt="${cat.name}">
+            <div class="cat-card-overlay">
+              <div class="cat-card-num">${String(numIdx++).padStart(2, '0')}</div>
+              <h3>${cat.name}</h3>
+              <p>${cat.description.split('.')[0]}.</p>
+              <div class="cat-card-arrow">→</div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+
+        level1.style.display = 'block';
+      }
+
+      applyFilters();
+    }
+
+    // Dropdown switch handler
+    function navigateSubcategory(subcatKey) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const catParam = urlParams.get('category');
+      if (subcatKey) {
+        window.location.href = `categories.html?category=${catParam}&subcategory=${subcatKey}`;
+      } else {
+        window.location.href = `categories.html?category=${catParam}`;
+      }
+    }
+
+    // Automatically assign category metadata attributes to existing HTML cards
+    function categorizeExistingProducts() {
+      const cards = document.querySelectorAll('#productsGrid .product-card');
+      cards.forEach(card => {
+        const name = card.querySelector('.product-name') ? card.querySelector('.product-name').textContent.toLowerCase() : '';
+        const cat = card.getAttribute('data-cat') || '';
+
+        if (name.includes('sofa') || name.includes('sectional') || name.includes('armchair')) {
+          card.setAttribute('data-category', 'sofa');
+          card.setAttribute('data-subcategory', 'sofa');
+          card.setAttribute('data-cat', 'sofa');
+        } else if (name.includes('bedside') || name.includes('bed') || name.includes('maharaja')) {
+          card.setAttribute('data-category', 'domestic');
+          card.setAttribute('data-subcategory', 'bed');
+          card.setAttribute('data-cat', 'bed');
+        } else if (name.includes('dining') || name.includes('cabinet') || name.includes('table')) {
+          card.setAttribute('data-category', 'dining-table');
+          card.setAttribute('data-subcategory', 'dining-table');
+          card.setAttribute('data-cat', 'dining-table');
+        } else if (name.includes('desk') || name.includes('chair')) {
+          card.setAttribute('data-category', 'office');
+          card.setAttribute('data-cat', 'office');
+        } else if (name.includes('almirah') || name.includes('wardrobe')) {
+          card.setAttribute('data-category', 'wardrobe');
+          card.setAttribute('data-subcategory', 'almirah');
+          card.setAttribute('data-cat', 'almirah');
+        }
+      });
+
+      const band = document.querySelector('.featured-band');
+      if (band) {
+        band.setAttribute('data-category', 'sofa');
+        band.setAttribute('data-subcategory', 'sofa');
+        band.setAttribute('data-cat', 'sofa');
+      }
+    }
+
+    // Generate orthopedic mattresses, designer vanities, and wardrobes dynamically
+    function generateExtraPlaceholders() {
+      const grid = document.getElementById('productsGrid');
+      extraPlaceholders.forEach((item, idx) => {
+        const id = `EXT-${idx + 1}`;
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.setAttribute('data-cat', item.subcategory || item.category);
+        card.setAttribute('data-category', item.category);
+        if (item.subcategory) {
+          card.setAttribute('data-subcategory', item.subcategory);
+        }
+        card.setAttribute('data-id', id);
+        card.setAttribute('data-price', item.price);
+        card.setAttribute('data-material', item.material);
+        card.setAttribute('data-style', item.style);
+        
+        card.innerHTML = `
+          <div class="product-img-wrap">
+            <img src="${item.img}" alt="${item.name}">
+            <div class="product-badge">Premium</div>
+            <div class="product-actions">
+              <button class="action-btn" title="Wishlist">♡</button>
+              <button class="action-btn" title="Quick View">⊕</button>
+            </div>
+          </div>
+          <div class="product-info">
+            <div class="product-cat">${item.subcategory ? item.subcategory.toUpperCase() : item.category.toUpperCase()}</div>
+            <div class="product-name">${item.name}</div>
+            <div class="product-desc">${item.desc}</div>
+            <div class="product-footer">
+              <div class="product-price"><span class="currency">₹</span>${item.price.toLocaleString('en-IN')}</div>
+              <a href="mailto:InternatinalFurnishers@gmail.com" class="enquire-btn">
+                <span>Enquire</span>
+                <svg width="12" height="8" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M0 4h10M6 1l4 3-4 3"/></svg>
+              </a>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
     function applyFilters() {
       const cards = document.querySelectorAll('#productsGrid .product-card');
       const band = document.querySelector('.featured-band');
@@ -1252,11 +1736,18 @@
 
       cards.forEach(card => {
         const cat = card.dataset.cat;
+        const category = card.dataset.category;
+        const subcategory = card.dataset.subcategory;
         const price = parseInt(card.dataset.price || 0);
         const materials = (card.dataset.material || '').split(' ');
         const style = card.dataset.style;
 
-        const matchesCat = currentCategory === 'all' || cat === currentCategory;
+        // Custom router matching criteria
+        const matchesCat = currentCategory === 'all' || 
+                           cat === currentCategory || 
+                           category === currentCategory || 
+                           subcategory === currentCategory;
+                           
         const matchesPrice = price <= currentPriceLimit;
         const matchesMaterial = selectedMaterials.length === 0 || selectedMaterials.some(m => materials.includes(m));
         const matchesStyle = selectedStyle === 'all' || style === selectedStyle;
@@ -1279,11 +1770,17 @@
       // Filter featured band
       if (band) {
         const bandCat = band.dataset.cat;
+        const bandCategory = band.dataset.category;
+        const bandSubcategory = band.dataset.subcategory;
         const bandPrice = parseInt(band.dataset.price || 0);
         const bandMaterials = (band.dataset.material || '').split(' ');
         const bandStyle = band.dataset.style;
 
-        const matchesCat = currentCategory === 'all' || bandCat === currentCategory;
+        const matchesCat = currentCategory === 'all' || 
+                           bandCat === currentCategory || 
+                           bandCategory === currentCategory || 
+                           bandSubcategory === currentCategory;
+                           
         const matchesPrice = bandPrice <= currentPriceLimit;
         const matchesMaterial = selectedMaterials.length === 0 || selectedMaterials.some(m => bandMaterials.includes(m));
         const matchesStyle = selectedStyle === 'all' || bandStyle === selectedStyle;
@@ -1323,7 +1820,7 @@
     }
 
     function loadMore() {
-      itemsLoaded += 3;
+      itemsLoaded += 4; // Load in batches of 4 for better desktop grid alignment
       applyFilters();
     }
 
@@ -1333,22 +1830,6 @@
       selectedMaterials = [];
       selectedStyle = 'all';
       itemsLoaded = 9;
-
-      // Reset tabs
-      document.querySelectorAll('.filter-tab').forEach(tab => {
-        tab.classList.remove('active');
-        if (tab.getAttribute('onclick') && tab.getAttribute('onclick').includes("'all'")) {
-          tab.classList.add('active');
-        }
-      });
-
-      // Reset sidebar rooms
-      document.querySelectorAll('.sidebar-section:nth-of-type(1) .sidebar-item').forEach(item => {
-        item.classList.remove('active');
-        if (item.getAttribute('onclick') && item.getAttribute('onclick').includes("'all'")) {
-          item.classList.add('active');
-        }
-      });
 
       // Reset price slider
       const slider = document.getElementById('priceSlider');
@@ -1370,11 +1851,8 @@
       applyFilters();
     }
 
-    // Initialize Page & Event Listeners
+    // Initialize Dynamic Routing Page
     window.addEventListener('DOMContentLoaded', () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const roomParam = urlParams.get('room');
-      
       const priceSlider = document.getElementById('priceSlider');
       if (priceSlider) {
         priceSlider.addEventListener('input', (e) => {
@@ -1383,16 +1861,18 @@
         });
       }
 
-      // Generate 100 placeholders first
+      // 1. Categorize preloaded HTML cards
+      categorizeExistingProducts();
+
+      // 2. Generate extra categories (Mattresses, dressing tables, etc.)
+      generateExtraPlaceholders();
+
+      // 3. Generate 100 placeholders beds for Bedroom
       generatePlaceholderBeds();
 
-      // Load files from Google Drive if set (replaces matching placeholders)
+      // 4. Load from Google Drive Sheet API and then render page
       loadGoogleDriveProducts().then(() => {
-        if (roomParam) {
-          filterCategory(null, roomParam);
-        } else {
-          applyFilters();
-        }
+        renderDynamicViews();
       });
     });
 

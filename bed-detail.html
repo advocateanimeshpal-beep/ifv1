@@ -120,6 +120,22 @@
       transform: scale(1.04);
     }
 
+    /* BREADCRUMB */
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.3s; }
+    .breadcrumb a:hover { color: var(--walnut-light); }
+    .breadcrumb .sep { color: rgba(139,99,71,0.4); }
+    .breadcrumb .current { color: var(--walnut-light); }
+
     /* RIGHT: Product Info */
     .info-wrap {
       display: flex;
@@ -402,7 +418,19 @@
 
     <!-- RIGHT: Info & Purchase specs -->
     <div class="info-wrap">
-      <a href="categories.html" class="back-btn">
+      <div class="breadcrumb" id="productBreadcrumbs">
+        <a href="index.html">Home</a>
+        <span class="sep">·</span>
+        <a href="categories.html">Category</a>
+        <span class="sep">·</span>
+        <a href="categories.html?category=domestic" id="breadcrumbCat">Domestic Furniture</a>
+        <span class="sep">·</span>
+        <a href="categories.html?category=domestic&subcategory=bed" id="breadcrumbSubcat">Bed</a>
+        <span class="sep">·</span>
+        <span class="current" id="breadcrumbName">Maharaja Bed</span>
+      </div>
+
+      <a href="categories.html" class="back-btn" id="backToCollectionsBtn">
         <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5" style="transform: rotate(180deg)">
           <path d="M0 5h12M7 1l5 4-5 4"/>
         </svg>
@@ -500,10 +528,10 @@
       <div>
         <div class="footer-heading">Collections</div>
         <ul class="footer-links">
-          <li><a href="categories.html?room=living">Living Room</a></li>
-          <li><a href="categories.html?room=bedroom">Bedroom</a></li>
-          <li><a href="categories.html?room=dining">Dining Room</a></li>
-          <li><a href="categories.html?room=office">Home Office</a></li>
+          <li><a href="categories.html?category=sofa">Living Room</a></li>
+          <li><a href="categories.html?category=domestic">Bedroom</a></li>
+          <li><a href="categories.html?category=dining-table">Dining Room</a></li>
+          <li><a href="categories.html?category=office">Home Office</a></li>
         </ul>
       </div>
       <div>
@@ -725,6 +753,12 @@
       document.getElementById('specMaterial').textContent = currentBed.material;
       document.getElementById('specStyle').textContent = currentBed.style;
 
+      // Update breadcrumbs dynamically
+      const breadcrumbName = document.getElementById('breadcrumbName');
+      if (breadcrumbName) {
+        breadcrumbName.textContent = currentBed.name;
+      }
+      
       updateEnquiryLink();
     }
 
@@ -750,6 +784,17 @@
     // Page Load
     window.addEventListener('DOMContentLoaded', () => {
       loadProduct();
+      
+      // Smart back button referrer logic
+      const backBtn = document.getElementById('backToCollectionsBtn');
+      if (backBtn) {
+        const referrer = document.referrer;
+        if (referrer && referrer.includes('categories.html')) {
+          backBtn.href = referrer;
+        } else {
+          backBtn.href = 'categories.html?category=domestic&subcategory=bed';
+        }
+      }
     });
   </script>
 </body>
