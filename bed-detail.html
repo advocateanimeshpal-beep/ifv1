@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bed Details — International Furnishers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --dark: #0A0908;
+      --cream: #F5F2EB;
+      --walnut: #8B6347;
+      --walnut-light: #C29B7F;
+      --warm-gray: #12100E;
+      --text-muted: #A8A29E;
+      --red: #A94442;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Josefin Sans', sans-serif;
+      background: var(--dark);
+      color: var(--cream);
+      overflow-x: hidden;
+    }
+
+    a, button { cursor: pointer; }
+
+    /* TOP BAR */
+    .topbar {
+      background: #000;
+      color: var(--cream);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 12px 60px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(139,99,71,0.08);
+    }
+    .topbar span em { color: var(--walnut-light); font-style: normal; }
+
+    /* NAV */
+    .nav {
+      height: 90px;
+      padding: 0 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--dark);
+      border-bottom: 1px solid rgba(139,99,71,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: all 0.4s;
+    }
+    .nav.scrolled {
+      height: 70px;
+      background: rgba(10,9,8,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom-color: rgba(139,99,71,0.15);
+    }
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      letter-spacing: 0.15em;
+      text-decoration: none;
+      color: var(--cream);
+      font-weight: 400;
+    }
+    .logo span { color: var(--walnut); }
+    
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--cream); }
+
+    /* PRODUCT CONTAINER */
+    .detail-container {
+      max-width: 1400px;
+      margin: 60px auto 100px;
+      padding: 0 60px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 80px;
+    }
+
+    /* LEFT: Product Gallery */
+    .gallery-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .main-image-box {
+      background: var(--warm-gray);
+      border: 1px solid rgba(139,99,71,0.08);
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .main-image-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .main-image-box:hover img {
+      transform: scale(1.04);
+    }
+
+    /* RIGHT: Product Info */
+    .info-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+    .back-btn {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--walnut-light);
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      margin-bottom: 30px;
+      transition: color 0.3s;
+    }
+    .back-btn:hover { color: var(--cream); }
+    .back-btn svg { transition: transform 0.3s; }
+    .back-btn:hover svg { transform: translateX(-4px); }
+
+    .id-badge {
+      align-self: flex-start;
+      padding: 4px 10px;
+      background: rgba(139,99,71,0.15);
+      border: 1px solid rgba(139,99,71,0.3);
+      color: var(--walnut-light);
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .prod-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 42px;
+      font-weight: 300;
+      color: var(--cream);
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .prod-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      color: var(--walnut-light);
+      margin-bottom: 24px;
+      border-bottom: 1px solid rgba(139,99,71,0.1);
+      padding-bottom: 20px;
+    }
+    .prod-price .currency { font-size: 18px; color: var(--text-muted); margin-right: 2px; }
+
+    .prod-desc {
+      font-size: 13px;
+      letter-spacing: 0.05em;
+      line-height: 1.8;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+    }
+
+    /* Interactive Selectors */
+    .selector-section {
+      margin-bottom: 28px;
+    }
+    .selector-title {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cream);
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    /* Size selector buttons */
+    .size-group {
+      display: flex;
+      gap: 12px;
+    }
+    .size-btn {
+      padding: 12px 24px;
+      background: transparent;
+      border: 1px solid rgba(139,99,71,0.25);
+      color: var(--text-muted);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: all 0.3s;
+    }
+    .size-btn:hover {
+      border-color: var(--walnut);
+      color: var(--cream);
+    }
+    .size-btn.active {
+      background: var(--walnut);
+      border-color: var(--walnut);
+      color: var(--cream);
+    }
+
+    /* Color Swatches */
+    .color-group {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    .color-swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      outline: 1px solid rgba(139,99,71,0.2);
+      transition: all 0.3s;
+      position: relative;
+    }
+    .color-swatch:hover {
+      outline-color: var(--cream);
+    }
+    .color-swatch.active {
+      border-color: var(--dark);
+      outline: 2px solid var(--walnut-light);
+    }
+    .color-swatch.grey { background: #5A5D64; }
+    .color-swatch.white { background: #ECECEC; }
+    .color-swatch.walnut { background: #553E2D; }
+
+    .color-name-display {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* Specifications Table */
+    .specs-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      margin-bottom: 40px;
+    }
+    .specs-table tr {
+      border-bottom: 1px solid rgba(139,99,71,0.08);
+    }
+    .specs-table td {
+      padding: 14px 0;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+    }
+    .specs-table td.label {
+      color: var(--text-muted);
+      text-transform: uppercase;
+      width: 40%;
+    }
+    .specs-table td.val {
+      color: var(--cream);
+      font-weight: 400;
+    }
+
+    /* Enquire Button */
+    .enquire-action-btn {
+      width: 100%;
+      padding: 18px;
+      background: var(--walnut);
+      color: var(--cream);
+      border: none;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      transition: all 0.35s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .enquire-action-btn:hover {
+      background: var(--cream);
+      color: var(--dark);
+    }
+
+
+
+    /* FOOTER */
+    footer {
+      background: #050404;
+      border-top: 1px solid rgba(139,99,71,0.08);
+      padding: 100px 60px 40px;
+    }
+    .footer-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.5fr repeat(3, 1fr);
+      gap: 60px;
+    }
+    .footer-brand .logo { font-size: 24px; display: inline-block; margin-bottom: 20px; }
+    .footer-brand p { font-size: 11px; line-height: 1.8; color: var(--text-muted); max-width: 320px; }
+    .footer-heading {
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--cream);
+      margin-bottom: 24px;
+      font-weight: 600;
+    }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-links a {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: color 0.3s;
+    }
+    .footer-links a:hover { color: var(--cream); }
+    .footer-bottom {
+      max-width: 1400px;
+      margin: 80px auto 0;
+      padding-top: 30px;
+      border-top: 1px solid rgba(139,99,71,0.05);
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 1024px) {
+      .detail-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding: 0 40px;
+      }
+      .topbar { padding: 12px 40px; }
+      .nav { padding: 0 40px; }
+      footer { padding: 80px 40px 40px; }
+      .footer-inner { grid-template-columns: 1fr 1fr; gap: 40px; }
+    }
+    @media (max-width: 600px) {
+      .topbar { display: none; }
+      .nav-links { display: none; }
+      .detail-container { padding: 0 20px; margin-top: 30px; }
+      footer { padding: 60px 20px 40px; }
+      .footer-inner { grid-template-columns: 1fr; gap: 40px; }
+      .sheet-config-panel { padding: 0 20px; }
+      .sheet-config-form { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <span>International Furnishers &middot; <em>Heritage Craftsmanship</em></span>
+    <span>Call: +91 98765 43210</span>
+  </div>
+
+  <!-- NAV -->
+  <nav class="nav" id="mainNav">
+    <a href="index.html" class="logo"><span>I</span>NTERNATIONAL <span>F</span>URNISHERS</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="categories.html" class="active">Category</a></li>
+      <li><a href="index.html#gallery">Gallery</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- PRODUCT CONTAINER -->
+  <main class="detail-container">
+    
+    <!-- LEFT: Gallery -->
+    <div class="gallery-wrap">
+      <div class="main-image-box">
+        <img id="productImg" src="https://images.unsplash.com/photo-1505693314120-0d443867891c?w=900&q=80" alt="Bed Picture">
+      </div>
+    </div>
+
+    <!-- RIGHT: Info & Purchase specs -->
+    <div class="info-wrap">
+      <a href="categories.html" class="back-btn">
+        <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5" style="transform: rotate(180deg)">
+          <path d="M0 5h12M7 1l5 4-5 4"/>
+        </svg>
+        Back to Collections
+      </a>
+
+      <div class="id-badge" id="productID">BED-000</div>
+      <h1 class="prod-name" id="productName">Loading Bed Details...</h1>
+      <div class="prod-price" id="productPrice"><span class="currency">₹</span>0</div>
+
+      <p class="prod-desc" id="productDesc">
+        Loading the fine details of this handcrafted masterwork...
+      </p>
+
+      <!-- Color Selector -->
+      <div class="selector-section">
+        <div class="selector-title">Select Color</div>
+        <div class="color-group">
+          <button class="color-swatch grey active" onclick="selectColor(this, 'Grey')" title="Grey"></button>
+          <button class="color-swatch white" onclick="selectColor(this, 'White')" title="White"></button>
+          <button class="color-swatch walnut" onclick="selectColor(this, 'Walnut')" title="Walnut"></button>
+          <span class="color-name-display" id="colorNameDisplay">Grey</span>
+        </div>
+      </div>
+
+      <!-- Size Selector -->
+      <div class="selector-section">
+        <div class="selector-title">Select Size</div>
+        <div class="size-group">
+          <button class="size-btn active" onclick="selectSize(this, 'Queen')">Queen Size</button>
+          <button class="size-btn" onclick="selectSize(this, 'King')">King Size</button>
+        </div>
+      </div>
+
+      <!-- Specifications -->
+      <table class="specs-table">
+        <tbody>
+          <tr>
+            <td class="label">Dimensions</td>
+            <td class="val" id="specSize">Queen Size: 5 x 6.5 ft</td>
+          </tr>
+          <tr>
+            <td class="label">Bed Height</td>
+            <td class="val" id="specHeight">17 inches</td>
+          </tr>
+          <tr>
+            <td class="label">Mattress Fit</td>
+            <td class="val" id="specMattress">Width 5 inch mattress compatibility</td>
+          </tr>
+          <tr>
+            <td class="label">Headboard Height</td>
+            <td class="val" id="specHeadboard">21 inches</td>
+          </tr>
+          <tr>
+            <td class="label">Material</td>
+            <td class="val" id="specMaterial">Premium Solid Wood</td>
+          </tr>
+          <tr>
+            <td class="label">Style</td>
+            <td class="val" id="specStyle">Heritage Classic</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Enquire button (updates dynamically based on selections) -->
+      <a href="mailto:InternatinalFurnishers@gmail.com" class="enquire-action-btn" id="enquireBtn">
+        <span>Enquire Now</span>
+        <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M0 5h12M7 1l5 4-5 4"/>
+        </svg>
+      </a>
+
+    </div>
+  </main>
+
+
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="logo"><span>I</span>NTERNATIONAL <span>F</span>URNISHERS</a>
+        <p>Handcrafting exquisite furniture of timeless beauty. We combine generations of master woodworking expertise with sleek modern aesthetics.</p>
+      </div>
+      <div>
+        <div class="footer-heading">Navigate</div>
+        <ul class="footer-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="categories.html">Category</a></li>
+          <li><a href="index.html#gallery">Gallery</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Collections</div>
+        <ul class="footer-links">
+          <li><a href="categories.html?room=living">Living Room</a></li>
+          <li><a href="categories.html?room=bedroom">Bedroom</a></li>
+          <li><a href="categories.html?room=dining">Dining Room</a></li>
+          <li><a href="categories.html?room=office">Home Office</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Contact</div>
+        <ul class="footer-links" style="color: var(--text-muted); font-size: 11px;">
+          <li>A-10, Kirti Nagar Industrial Area, Phase II</li>
+          <li>New Delhi, DL 110015</li>
+          <li>Email: InternatinalFurnishers@gmail.com</li>
+          <li>Phone: +91 98765 43210</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 International Furnishers. All rights reserved.</span>
+      <span>Designed with Distinction</span>
+    </div>
+  </footer>
+
+  <script>
+    // Sticky Nav Scroll effect
+    const nav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      if(window.scrollY > 40) { nav.classList.add('scrolled'); }
+      else { nav.classList.remove('scrolled'); }
+    });
+
+    // Default Fallback Database
+    const defaultBeds = [
+      {
+        id: "BED-MAHARAJA",
+        name: "Maharaja Bed",
+        image: "https://images.unsplash.com/photo-1505693314120-0d443867891c?w=900&q=80",
+        price: 112000,
+        material: "Teak Wood",
+        style: "Royal Heritage",
+        description: "Behold the majesty of the Maharaja Bed. Handcrafted from generations-old solid teakwood logs, it features deep, intricate floral and medallion carvings along its high headboard. Standard built with extreme care, structural reinforcements ensure structural lifetime stability."
+      },
+      {
+        id: "BED-IMPERIAL",
+        name: "Imperial Bedside Table / Bed",
+        image: "https://images.unsplash.com/photo-1532372320978-9b4d7a92b24d?w=900&q=80",
+        price: 18000,
+        material: "Solid Teak",
+        style: "Classic Heritage",
+        description: "Part of our imperial bedroom collection. Designed with vintage accents, custom-milled brass pull hardware, and solid wood drawer slides. Built to complement the Maharaja or Regency series seamlessly."
+      },
+      {
+        id: "BED-ROYAL",
+        name: "Almirah Royale Bed Frame",
+        image: "https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=900&q=80",
+        price: 76000,
+        material: "Sheesham Wood",
+        style: "Royal Contemporary",
+        description: "A gorgeous premium bed frame crafted with sheesham hardwood grids. The headboard displays natural grain variations beautifully. Standard with hidden storage compartments and a modern platform styling."
+      }
+    ];
+
+    let currentBed = defaultBeds[0];
+    let selectedSize = 'Queen';
+    let selectedColor = 'Grey';
+
+    // Interactive Size Switcher
+    function selectSize(btnEl, size) {
+      document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+      btnEl.classList.add('active');
+      selectedSize = size;
+      
+      const specSize = document.getElementById('specSize');
+      if (size === 'Queen') {
+        specSize.textContent = "Queen Size: 5 x 6.5 ft";
+      } else {
+        specSize.textContent = "King Size: 6 x 6.5 ft";
+      }
+
+      updateEnquiryLink();
+    }
+
+    // Interactive Color Switcher
+    function selectColor(btnEl, color) {
+      document.querySelectorAll('.color-swatch').forEach(btn => btn.classList.remove('active'));
+      btnEl.classList.add('active');
+      selectedColor = color;
+      
+      document.getElementById('colorNameDisplay').textContent = color;
+      updateEnquiryLink();
+    }
+
+    // Update Email Form Action
+    function updateEnquiryLink() {
+      const email = "InternatinalFurnishers@gmail.com";
+      const subject = encodeURIComponent(`Product Inquiry: ${currentBed.name} (${currentBed.id})`);
+      const body = encodeURIComponent(
+        `Dear International Furnishers Team,\n\n` +
+        `I would like to enquire about the following handcrafted bed product:\n\n` +
+        `Product ID: ${currentBed.id}\n` +
+        `Name: ${currentBed.name}\n` +
+        `Selected Size: ${selectedSize} Size\n` +
+        `Selected Color: ${selectedColor}\n` +
+        `Price: ₹ ${currentBed.price.toLocaleString('en-IN')}\n\n` +
+        `Please provide availability, delivery details, and customization options.\n\n` +
+        `Best regards,\n[Your Name]`
+      );
+      document.getElementById('enquireBtn').href = `mailto:${email}?subject=${subject}&body=${body}`;
+    }
+
+    const placeholderBedImages = [
+      "https://images.unsplash.com/photo-1505693314120-0d443867891c?w=700&q=80",
+      "https://images.unsplash.com/photo-1540518614846-7eded433c457?w=700&q=80",
+      "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=700&q=80",
+      "https://images.unsplash.com/photo-1531835551805-16d864c8d311?w=700&q=80",
+      "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=700&q=80",
+      "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=700&q=80",
+      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=700&q=80",
+      "https://images.unsplash.com/photo-1617806118233-18e1db207f62?w=700&q=80",
+      "https://images.unsplash.com/photo-1618220179428-22790b461013?w=700&q=80",
+      "https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=700&q=80"
+    ];
+
+    const placeholderNames = [
+      "Sleek Platform Bed", "Royal Canopy Bed", "Minimalist Futon Bed", 
+      "Upholstered Wingback Bed", "Tufted Chesterfield Bed", "Scandinavian Oak Bed", 
+      "Modern Storage Bed", "Industrial Iron Bed Frame", "Classic Spindle Bed", 
+      "Japanese Zen Bed", "French Country Cane Bed", "Mid-Century Modern Bed",
+      "Regency Poster Bed", "Venetian Velvet Bed", "Imperial Teak Bed Frame"
+    ];
+
+    const placeholderMaterials = ["teak", "sheesham", "mango", "mdf", "fabric", "metal"];
+    const placeholderStyles = ["classic", "contemporary", "rustic", "minimal", "royal"];
+
+    function parseFileName(fileName) {
+      const baseName = fileName.substring(0, fileName.lastIndexOf('.')) || fileName;
+      const parts = baseName.split('_');
+      
+      const id = parts[0] ? parts[0].trim().toUpperCase() : '';
+      const name = parts[1] ? parts[1].trim() : '';
+      const price = parts[2] ? parseInt(parts[2].trim()) : NaN;
+      const material = parts[3] ? parts[3].trim() : '';
+      const style = parts[4] ? parts[4].trim() : '';
+      
+      return { id, name, price, material, style };
+    }
+
+    async function loadProduct() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const targetId = (urlParams.get('id') || "BED-001").toUpperCase();
+      
+      const driveApiUrl = localStorage.getItem('bedDriveApiUrl') || 'https://script.google.com/macros/s/AKfycbwYyH9d7N-p5T1w9eN9m4V_g5Y_h-eM_a_g/exec';
+      let productFound = false;
+
+      // 1. Try to load from Google Drive API
+      if (driveApiUrl) {
+        try {
+          const res = await fetch(driveApiUrl);
+          const data = await res.json();
+          
+          if (data && data.success && data.files) {
+            const matchedFile = data.files.find(file => {
+              const parsed = parseFileName(file.name);
+              return parsed.id.toUpperCase() === targetId;
+            });
+
+            if (matchedFile) {
+              const parsed = parseFileName(matchedFile.name);
+              const imgUrl = `https://lh3.googleusercontent.com/d/${matchedFile.id}`;
+              
+              currentBed = {
+                id: parsed.id,
+                name: parsed.name || `Synced Bed ${parsed.id}`,
+                image: imgUrl,
+                price: parsed.price || 45000,
+                material: parsed.material || 'Premium Solid Wood',
+                style: parsed.style || 'Contemporary',
+                description: `Handcrafted masterwork loaded from Google Drive folder. Standard built with lifetime durability and custom finishes.`
+              };
+              productFound = true;
+            }
+          }
+        } catch (err) {
+          console.error("Failed fetching Google Drive file list:", err);
+        }
+      }
+
+      // 2. Fallback to Local/Placeholder Database if not found in Google Drive
+      if (!productFound) {
+        // Check if ID is in placeholder format BED-XXX
+        if (targetId.startsWith("BED-")) {
+          const indexStr = targetId.replace("BED-", "");
+          const index = parseInt(indexStr) || 1;
+          
+          const imgUrl = placeholderBedImages[(index - 1) % placeholderBedImages.length];
+          const name = placeholderNames[(index - 1) % placeholderNames.length] + " " + index;
+          const price = 25000 + ((index * 1999) % 175000);
+          const material = placeholderMaterials[(index * 3) % placeholderMaterials.length];
+          const style = placeholderStyles[(index * 2) % placeholderStyles.length];
+          
+          currentBed = {
+            id: targetId,
+            name: name,
+            image: imgUrl,
+            price: price,
+            material: material.charAt(0).toUpperCase() + material.slice(1) + " Wood",
+            style: style.charAt(0).toUpperCase() + style.slice(1),
+            description: `Premium handcrafted solid wood bed frame, tailored to absolute perfection. Designed with a custom headboard and built to last generations.`
+          };
+        } else {
+          // Absolute fallback
+          currentBed = defaultBeds.find(b => b.id.toUpperCase() === targetId) || defaultBeds[0];
+        }
+      }
+
+      // Render details
+      document.getElementById('productID').textContent = currentBed.id;
+      document.getElementById('productName').textContent = currentBed.name;
+      document.getElementById('productPrice').innerHTML = `<span class="currency">₹</span>${currentBed.price.toLocaleString('en-IN')}`;
+      document.getElementById('productDesc').textContent = currentBed.description;
+      document.getElementById('productImg').src = currentBed.image;
+      document.getElementById('productImg').alt = currentBed.name;
+      
+      document.getElementById('specMaterial').textContent = currentBed.material;
+      document.getElementById('specStyle').textContent = currentBed.style;
+
+      updateEnquiryLink();
+    }
+
+    // Developer Console Helpers for Drive API Configuration
+    window.setDriveApi = function(url) {
+      if (url) {
+        localStorage.setItem('bedDriveApiUrl', url);
+        loadProduct().then(() => {
+          console.log("Success: Google Drive API URL saved and synced!");
+        });
+      } else {
+        console.error("Error: Please provide a valid Apps Script URL.");
+      }
+    };
+
+    window.resetDriveApi = function() {
+      localStorage.removeItem('bedDriveApiUrl');
+      loadProduct().then(() => {
+        console.log("Success: Reset to default public Google Drive folder API.");
+      });
+    };
+
+    // Page Load
+    window.addEventListener('DOMContentLoaded', () => {
+      loadProduct();
+    });
+  </script>
+</body>
+</html>
