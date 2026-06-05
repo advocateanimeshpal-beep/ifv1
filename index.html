@@ -1,1059 +1,1266 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>International Furnishers</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@200;300;400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <title>International Furnishers | Premium Furniture · Varanasi</title>
+  <meta name="description" content="International Furnishers — premium handcrafted furniture in Varanasi since 1998. Domestic, office, wardrobe, dining & mattress. Visit our showroom or call +91 9198126666."/>
+  <meta name="theme-color" content="#0e0c0a"/>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@200;300;400;600&display=swap" rel="stylesheet"/>
+
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
+    /* ── TOKENS ── */
     :root {
-      --cream: #f5f0e8;
-      --dark: #0e0c0a;
-      --walnut: #8B6347;
+      --cream:        #f5f0e8;
+      --dark:         #0e0c0a;
+      --walnut:       #8B6347;
       --walnut-light: #a87d5f;
-      --warm-gray: #2a2520;
-      --text-muted: #9a9082;
-      --red: #c0392b;
+      --walnut-dim:   rgba(139,99,71,0.18);
+      --warm-gray:    #1a1512;
+      --warm-gray2:   #2a2520;
+      --muted:        #9a9082;
+      --hairline:     rgba(139,99,71,0.12);
+      --hairline-hard:rgba(139,99,71,0.28);
+
+      --disp: 'Cormorant Garamond', Georgia, serif;
+      --font: 'Josefin Sans', system-ui, sans-serif;
+
+      --r-sm:   4px;
+      --r-full: 9999px;
+      --bar-h:  68px;
+      --safe:   env(safe-area-inset-bottom, 0px);
     }
 
-    html { scroll-behavior: smooth; }
-
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 72px; -webkit-text-size-adjust: 100%; }
     body {
-      font-family: 'Josefin Sans', sans-serif;
+      font-family: var(--font);
       background: var(--dark);
       color: var(--cream);
+      -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
+      /* bottom bar padding */
+      padding-bottom: calc(var(--bar-h) + var(--safe));
     }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    button { font: inherit; cursor: pointer; }
 
-    /* TOP BAR */
-    .topbar {
-      background: var(--dark);
-      border-bottom: 1px solid rgba(139,99,71,0.15);
-      padding: 10px 60px;
-      display: flex;
-      align-items: center;
-      gap: 36px;
-      font-size: 11px;
-      letter-spacing: 0.15em;
-      color: var(--text-muted);
-      text-transform: uppercase;
-    }
-    .topbar a { color: var(--text-muted); text-decoration: none; transition: color 0.3s; display: flex; align-items: center; gap: 8px; }
-    .topbar a:hover { color: var(--walnut); }
-    .topbar .icon { color: var(--red); font-size: 13px; }
-    .topbar-divider { width: 1px; height: 14px; background: rgba(139,99,71,0.2); }
+    .wrap { max-width: 480px; margin: 0 auto; padding: 0 20px; }
 
-    /* NAV */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 0 60px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 80px;
-      transition: all 0.4s ease;
-    }
-    nav.scrolled {
-      background: rgba(14,12,10,0.95);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(139,99,71,0.15);
-      height: 64px;
-    }
-    .logo {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 22px;
+    /* ══════════════════════════
+       TYPOGRAPHY SCALE
+    ══════════════════════════ */
+    .t-disp {
+      font-family: var(--disp);
+      font-size: clamp(64px, 20vw, 110px);
       font-weight: 300;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--cream);
-      text-decoration: none;
+      line-height: 0.92;
+      letter-spacing: -0.02em;
     }
-    .logo span { color: var(--walnut); }
-    .nav-links { display: flex; gap: 44px; list-style: none; }
-    .nav-links a {
-      font-size: 10px;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      text-decoration: none;
-      position: relative;
-      transition: color 0.3s;
+    .t-xl {
+      font-family: var(--disp);
+      font-size: clamp(28px, 8vw, 44px);
+      font-weight: 300;
+      line-height: 1.1;
     }
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: -4px; left: 0;
-      width: 0; height: 1px;
-      background: var(--walnut);
-      transition: width 0.35s ease;
+    .t-lg { font-size: 18px; font-weight: 300; line-height: 1.3; }
+    .t-body { font-size: 13px; font-weight: 300; line-height: 2; letter-spacing: 0.06em; }
+    .t-cap { font-size: 11px; font-weight: 400; line-height: 1.6; }
+    .t-eye {
+      font-size: 9px; font-weight: 400;
+      letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--walnut-light);
     }
-    .nav-links a:hover { color: var(--cream); }
-    .nav-links a:hover::after { width: 100%; }
 
-    /* HERO */
+    /* ══════════════════════════
+       BUTTONS
+    ══════════════════════════ */
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      height: 48px; padding: 0 32px;
+      font-family: var(--font); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      cursor: pointer; text-decoration: none; white-space: nowrap;
+      border: none; position: relative; overflow: hidden;
+      transition: color 0.35s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn::before {
+      content: '';
+      position: absolute; inset: 0;
+      transform: translateX(-101%);
+      transition: transform 0.4s ease;
+    }
+    .btn:active { opacity: 0.82; }
+    .btn span, .btn svg { position: relative; z-index: 1; }
+    .btn svg { transition: transform 0.3s; flex-shrink: 0; }
+    .btn:hover svg { transform: translateX(5px); }
+    .btn:hover::before { transform: translateX(0); }
+
+    .btn-walnut { background: var(--walnut); color: var(--cream); }
+    .btn-walnut::before { background: var(--cream); }
+    .btn-walnut:hover { color: var(--dark); }
+
+    .btn-outline {
+      background: transparent; color: var(--cream);
+      border: 1px solid var(--hairline-hard);
+    }
+    .btn-outline::before { background: rgba(139,99,71,0.12); }
+    .btn-outline:hover { color: var(--walnut-light); border-color: var(--walnut); }
+
+    .btn-ghost {
+      background: transparent; color: var(--cream);
+      border: 1px solid rgba(255,255,255,0.14);
+    }
+    .btn-ghost::before { background: rgba(255,255,255,0.06); }
+    .btn-ghost:hover { color: var(--walnut-light); border-color: var(--hairline-hard); }
+
+    .btn-sm { height: 38px; padding: 0 20px; font-size: 9px; }
+
+    .btn-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+    /* ══════════════════════════
+       MARQUEE
+    ══════════════════════════ */
+    .marquee {
+      height: 36px;
+      background: var(--walnut);
+      display: flex; align-items: center; overflow: hidden;
+    }
+    .mq-track {
+      display: flex; white-space: nowrap;
+      animation: mq-scroll 32s linear infinite;
+      will-change: transform; transform: translateZ(0);
+    }
+    .mq-item {
+      font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase;
+      color: rgba(245,240,232,0.85); flex-shrink: 0; padding: 0 18px;
+    }
+    .mq-sep { color: rgba(245,240,232,0.45); flex-shrink: 0; font-size: 10px; }
+    @keyframes mq-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ══════════════════════════
+       NAV
+    ══════════════════════════ */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      height: 56px;
+      background: rgba(14,12,10,0.96);
+      backdrop-filter: blur(20px) saturate(160%);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      border-bottom: 1px solid var(--hairline);
+      transition: box-shadow 0.3s;
+    }
+    .nav.scrolled { box-shadow: 0 4px 24px rgba(0,0,0,0.5); }
+    .nav-inner {
+      max-width: 480px; margin: 0 auto; padding: 0 20px;
+      height: 100%; display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: var(--disp); font-size: 16px; font-weight: 300;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream);
+    }
+    .nav-logo span { color: var(--walnut-light); }
+    .nav-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      height: 34px; padding: 0 18px;
+      background: var(--walnut); color: var(--cream);
+      font-size: 9px; font-weight: 600; letter-spacing: 0.22em;
+      text-transform: uppercase; border: none;
+    }
+
+    /* ══════════════════════════
+       HERO
+    ══════════════════════════ */
     .hero {
       position: relative;
-      height: 100vh;
-      min-height: 700px;
-      display: flex;
-      align-items: flex-end;
+      background: var(--dark);
+      min-height: calc(100svh - 92px);
+      display: flex; align-items: flex-end;
       overflow: hidden;
+      padding-bottom: 48px;
     }
     .hero-bg {
-      position: absolute;
-      inset: 0;
-      background: url('https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1800&q=80') center/cover no-repeat;
-      transform: scale(1.08);
-      animation: heroZoom 12s ease forwards;
+      position: absolute; inset: 0;
+      background: url('https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1400&q=80') center/cover no-repeat;
+      opacity: 0.55;
+      animation: heroZoom 14s ease forwards;
+      transform: scale(1.07);
     }
     @keyframes heroZoom { to { transform: scale(1); } }
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        120deg,
-        rgba(14,12,10,0.82) 0%,
-        rgba(14,12,10,0.45) 50%,
-        rgba(14,12,10,0.2) 100%
-      );
+    .hero::before {
+      content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(14,12,10,0.18) 0%, rgba(14,12,10,0.65) 100%),
+        repeating-linear-gradient(-45deg, transparent, transparent 60px, rgba(245,240,232,0.012) 60px, rgba(245,240,232,0.012) 61px);
     }
-    .hero-grain {
-      position: absolute;
-      inset: 0;
-      opacity: 0.04;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-      background-size: 200px;
+    .hero-ghost {
+      position: absolute; right: -16px; bottom: -32px;
+      font-family: var(--disp);
+      font-size: clamp(180px, 55vw, 440px);
+      font-weight: 300; line-height: 0.8;
+      color: rgba(139,99,71,0.06);
+      user-select: none; pointer-events: none; z-index: 1;
     }
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      padding: 0 60px 80px;
-      max-width: 640px;
-      animation: fadeUp 1.2s 0.3s ease both;
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(40px); }
-      to { opacity: 1; transform: translateY(0); }
+    .hero-inner {
+      position: relative; z-index: 2;
+      max-width: 480px; margin: 0 auto; width: 100%; padding: 0 20px;
     }
     .hero-eyebrow {
-      font-size: 10px;
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
-      color: var(--walnut-light);
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 18px;
     }
     .hero-eyebrow::before {
-      content: '';
-      display: block;
-      width: 40px;
-      height: 1px;
-      background: var(--walnut);
+      content: ''; display: block; width: 36px; height: 1px; background: var(--walnut);
     }
-    .hero-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(48px, 6vw, 88px);
-      font-weight: 300;
-      line-height: 1.05;
-      letter-spacing: -0.01em;
-      margin-bottom: 28px;
-      color: var(--cream);
+    .hero-title { color: var(--cream); margin-bottom: 20px; }
+    .hero-title em { font-style: italic; color: var(--walnut-light); }
+    .hero-sub {
+      font-size: 13px; font-weight: 300; line-height: 1.9;
+      letter-spacing: 0.06em; color: rgba(245,240,232,0.65);
+      margin-bottom: 28px; max-width: 300px;
     }
-    .hero-title em {
-      font-style: italic;
+
+    /* ══════════════════════════
+       SECTIONS
+    ══════════════════════════ */
+    .sec { padding: 48px 0; }
+    .sec-warm { background: var(--warm-gray); }
+    .sec-warm2 { background: var(--warm-gray2); }
+
+    .sec-head { margin-bottom: 28px; }
+    .sec-eye { color: var(--walnut-light); margin-bottom: 8px; }
+    .sec-title { color: var(--cream); }
+    .sec-title em { font-style: italic; color: var(--walnut-light); }
+
+    /* ══════════════════════════
+       FEATURES LIST (disc-style)
+    ══════════════════════════ */
+    .disc-list { border-top: 1px solid var(--hairline); }
+    .disc-row {
+      display: flex; align-items: flex-start; gap: 16px;
+      padding: 18px 0; border-bottom: 1px solid var(--hairline);
+      transition: padding-left 0.22s ease;
+    }
+    @media (hover: hover) {
+      .disc-row:hover { padding-left: 6px; }
+      .disc-row:hover .disc-icon { background: var(--walnut); }
+    }
+    .disc-icon {
+      width: 24px; height: 24px;
+      background: var(--warm-gray2);
+      border: 1px solid var(--hairline-hard);
       color: var(--walnut-light);
-    }
-    .hero-desc {
-      font-size: 12px;
-      letter-spacing: 0.12em;
-      line-height: 2;
-      color: var(--text-muted);
-      margin-bottom: 44px;
-      max-width: 380px;
-    }
-    .hero-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 16px;
-      padding: 16px 36px;
-      background: var(--walnut);
-      color: var(--cream);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      text-decoration: none;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.35s ease;
-    }
-    .hero-cta::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: var(--cream);
-      transform: translateX(-101%);
-      transition: transform 0.4s ease;
-    }
-    .hero-cta:hover { color: var(--dark); }
-    .hero-cta:hover::before { transform: translateX(0); }
-    .hero-cta span { position: relative; z-index: 1; }
-    .hero-cta svg { position: relative; z-index: 1; transition: transform 0.3s; }
-    .hero-cta:hover svg { transform: translateX(6px); }
-
-    /* CATEGORY PANEL */
-    .category-panel {
-      position: absolute;
-      right: 60px;
-      bottom: 60px;
-      z-index: 2;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1px;
-      background: rgba(139,99,71,0.1);
-      border: 1px solid rgba(139,99,71,0.15);
-      backdrop-filter: blur(24px);
-      animation: fadeUp 1.2s 0.6s ease both;
-    }
-    .cat-item {
-      padding: 28px 32px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      background: rgba(14,12,10,0.5);
-      transition: background 0.3s;
-      border: 1px solid transparent;
-      text-decoration: none;
-    }
-    .cat-item:hover {
-      background: rgba(139,99,71,0.12);
-      border-color: rgba(139,99,71,0.3);
-    }
-    .cat-item svg { width: 32px; height: 32px; stroke: var(--walnut-light); stroke-width: 1.2; fill: none; }
-    .cat-item span {
-      font-size: 9px;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      transition: color 0.3s;
-    }
-    .cat-item:hover span { color: var(--walnut-light); }
-
-    /* SCROLL INDICATOR */
-    .scroll-hint {
-      position: absolute;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      z-index: 2;
-      animation: fadeUp 1.2s 1s ease both;
-    }
-    .scroll-hint span {
-      font-size: 9px;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-    .scroll-line {
-      width: 1px;
-      height: 48px;
-      background: linear-gradient(to bottom, var(--walnut), transparent);
-      animation: scrollPulse 2s infinite;
-    }
-    @keyframes scrollPulse {
-      0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
-      50% { opacity: 1; transform: scaleY(1); }
-    }
-
-    /* FEATURES STRIP */
-    .features-strip {
-      background: var(--warm-gray);
-      border-top: 1px solid rgba(139,99,71,0.1);
-      border-bottom: 1px solid rgba(139,99,71,0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .features-strip-inner {
-      display: flex;
-      width: 100%;
-      max-width: 1200px;
-    }
-    .feature-item {
-      flex: 1;
-      padding: 36px 40px;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      border-right: 1px solid rgba(139,99,71,0.08);
-    }
-    .feature-item:last-child { border-right: none; }
-    .feature-icon {
-      width: 44px; height: 44px;
-      border: 1px solid rgba(139,99,71,0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      color: var(--walnut-light);
-      font-size: 18px;
-    }
-    .feature-text h4 {
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
       font-size: 11px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--cream);
-      margin-bottom: 4px;
+      transition: background 0.18s;
     }
-    .feature-text p {
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      color: var(--text-muted);
+    .disc-title { font-size: 14px; font-weight: 400; color: var(--cream); margin-bottom: 3px; letter-spacing: 0.04em; }
+    .disc-desc { font-size: 12px; font-weight: 300; color: var(--muted); line-height: 1.7; letter-spacing: 0.04em; }
+
+    /* ══════════════════════════
+       CARDS GRID (products)
+    ══════════════════════════ */
+    .cards-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+    .card {
+      background: var(--warm-gray2);
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: opacity 0.15s;
+      position: relative; overflow: hidden;
+    }
+    .card:active { opacity: 0.78; }
+    @media (hover: hover) {
+      .card:hover .card-img img { transform: scale(1.06); }
+      .card:hover .card-name { color: var(--walnut-light); }
+    }
+    .card-img {
+      background: #1a1512;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+    }
+    .card-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .card-meta { padding: 10px 10px 14px; }
+    .card-name { font-size: 13px; font-weight: 400; color: var(--cream); margin-bottom: 2px; letter-spacing: 0.04em; transition: color 0.2s; }
+    .card-sub { font-size: 11px; font-weight: 300; color: var(--muted); letter-spacing: 0.06em; }
+    .card-num {
+      position: absolute; top: 10px; right: 12px;
+      font-family: var(--disp); font-size: 44px; font-weight: 300;
+      color: rgba(139,99,71,0.15); line-height: 1; pointer-events: none;
     }
 
-    /* ABOUT SECTION */
-    .about {
-      padding: 140px 60px;
+    /* ══════════════════════════
+       CAMPAIGN / DARK BLOCK
+    ══════════════════════════ */
+    .campaign {
+      position: relative; background: #070605; overflow: hidden;
+      padding: 48px 0 calc(48px + 8px);
+    }
+    .campaign::before {
+      content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background: repeating-linear-gradient(-45deg, transparent, transparent 72px, rgba(245,240,232,0.007) 72px, rgba(245,240,232,0.007) 73px);
+    }
+    .campaign-bg {
+      position: absolute; inset: 0;
+      object-fit: cover; width: 100%; height: 100%;
+      opacity: 0.25; z-index: 0;
+    }
+    .campaign-inner { position: relative; z-index: 2; max-width: 480px; margin: 0 auto; padding: 0 20px; }
+    .campaign-title {
+      font-family: var(--disp);
+      font-size: clamp(52px, 15vw, 84px);
+      font-weight: 300; line-height: 0.94;
+      color: var(--cream); margin-bottom: 20px;
+    }
+    .campaign-title em { font-style: italic; color: var(--walnut-light); }
+    .campaign-sub {
+      font-size: 13px; font-weight: 300; line-height: 1.9; letter-spacing: 0.06em;
+      color: rgba(245,240,232,0.62); margin-bottom: 32px; max-width: 280px;
+    }
+
+    /* ══════════════════════════
+       ABOUT / STATS
+    ══════════════════════════ */
+    .proof-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1px; background: var(--hairline); border: 1px solid var(--hairline);
+      margin: 24px 0;
+    }
+    .proof-item {
+      background: var(--dark); padding: 18px 16px;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .proof-top { font-size: 9px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); }
+    .proof-main { font-family: var(--disp); font-size: 26px; font-weight: 300; color: var(--walnut-light); line-height: 1; }
+    .proof-note { font-size: 11px; font-weight: 300; color: var(--muted); letter-spacing: 0.04em; }
+
+    /* owner / about-tabs */
+    .about-tabs {
+      display: flex; background: var(--warm-gray2);
+      padding: 4px; margin-bottom: 26px; gap: 4px;
+      border: 1px solid var(--hairline);
+    }
+    .about-tab {
+      flex: 1; height: 38px; border: none;
+      background: transparent; color: var(--muted);
+      font-family: var(--font); font-size: 11px; font-weight: 400;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      cursor: pointer; transition: background 0.2s, color 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .about-tab.active {
+      background: var(--walnut); color: var(--cream);
+    }
+    .about-panel { display: none; }
+    .about-panel.active { display: block; animation: fadeup 0.32s cubic-bezier(0.22,1,0.36,1) both; }
+
+    .about-lead { font-family: var(--disp); font-size: 22px; font-weight: 300; color: var(--cream); margin-bottom: 14px; line-height: 1.2; }
+    .about-body { font-size: 13px; font-weight: 300; line-height: 2; letter-spacing: 0.05em; color: var(--muted); }
+
+    /* owner card */
+    .owner-card {
+      background: var(--warm-gray2);
+      border: 1px solid var(--hairline);
+      overflow: hidden;
+    }
+    .owner-card-header {
+      background: #070605;
+      padding: 32px 24px 28px;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .owner-card-header::before {
+      content: ''; position: absolute; inset: 0;
+      background: repeating-linear-gradient(-45deg, transparent, transparent 44px, rgba(245,240,232,0.012) 44px, rgba(245,240,232,0.012) 45px);
+    }
+    .owner-avatar {
+      width: 88px; height: 88px;
+      border: 1px solid var(--hairline-hard);
+      overflow: hidden; margin-bottom: 14px;
+      background: var(--warm-gray2);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; z-index: 1;
+    }
+    .owner-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+    .owner-eyebrow { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--walnut-light); margin-bottom: 6px; position: relative; z-index: 1; }
+    .owner-name { font-family: var(--disp); font-size: 28px; font-weight: 300; color: var(--cream); letter-spacing: 0.1em; margin-bottom: 14px; position: relative; z-index: 1; }
+    .owner-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; position: relative; z-index: 1; }
+    .owner-tag {
+      height: 26px; padding: 0 12px;
+      background: rgba(139,99,71,0.10); border: 1px solid var(--hairline-hard);
+      font-size: 10px; font-weight: 400; letter-spacing: 0.1em;
+      color: rgba(245,240,232,0.72);
+      display: inline-flex; align-items: center;
+    }
+    .owner-stats {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .owner-stat {
+      padding: 16px 10px; text-align: center;
+      border-right: 1px solid var(--hairline);
+    }
+    .owner-stat:last-child { border-right: 0; }
+    .owner-stat-num { font-family: var(--disp); font-size: 24px; font-weight: 300; color: var(--walnut-light); line-height: 1; }
+    .owner-stat-lbl { font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+    .owner-card-body { padding: 22px 20px 26px; }
+    .owner-bio { font-size: 13px; font-weight: 300; line-height: 1.9; letter-spacing: 0.04em; color: var(--muted); margin-bottom: 18px; }
+    .owner-quote {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 16px 0; border-top: 1px solid var(--hairline); margin-bottom: 18px;
+    }
+    .owner-quote-bar { width: 2px; flex-shrink: 0; background: var(--walnut); min-height: 40px; margin-top: 3px; }
+    .owner-quote-text { font-family: var(--disp); font-style: italic; font-size: 17px; font-weight: 300; color: rgba(245,240,232,0.72); line-height: 1.5; }
+    .owner-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    /* ══════════════════════════
+       TIMINGS / LOCATION TABS
+    ══════════════════════════ */
+    .loc-tabs {
+      display: flex; padding: 4px; background: var(--warm-gray2);
+      border: 1px solid var(--hairline);
+      margin-bottom: 24px; gap: 4px;
+    }
+    .loc-tab {
+      flex: 1; height: 36px; border: none;
+      background: transparent; color: var(--muted);
+      font-family: var(--font); font-size: 10px; font-weight: 400;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      cursor: pointer; transition: background 0.2s, color 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .loc-tab.active { background: var(--walnut); color: var(--cream); }
+    .loc-panel { display: none; }
+    .loc-panel.active { display: block; animation: fadeup 0.28s ease both; }
+
+    .timing-list { border-top: 1px solid var(--hairline); }
+    .timing-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 0; border-bottom: 1px solid var(--hairline);
+      font-size: 13px;
+    }
+    .timing-day { font-weight: 400; letter-spacing: 0.04em; color: var(--cream); }
+    .timing-val { font-weight: 300; letter-spacing: 0.06em; color: var(--muted); }
+    .timing-row.today { background: rgba(139,99,71,0.07); padding-left: 10px; padding-right: 10px; margin: 0 -10px; }
+    .timing-row.today .timing-day { color: var(--walnut-light); font-weight: 400; }
+    .timing-row.today .timing-val { color: var(--walnut-light); }
+    .timing-closed { color: var(--muted) !important; }
+
+    /* location info */
+    .loc-info { margin-top: 20px; }
+    .loc-info-row {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 12px 0; border-bottom: 1px solid var(--hairline);
+    }
+    .loc-info-icon {
+      width: 28px; height: 28px; flex-shrink: 0;
+      border: 1px solid var(--hairline-hard);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--walnut-light); font-size: 12px; margin-top: 2px;
+    }
+    .loc-info-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
+    .loc-info-val { font-size: 13px; font-weight: 300; color: var(--cream); line-height: 1.6; letter-spacing: 0.04em; }
+    .loc-btn-grid { display: flex; flex-direction: column; gap: 8px; margin-top: 20px; }
+    .loc-btn-grid .btn { width: 100%; justify-content: center; }
+
+    /* ══════════════════════════
+       GALLERY (masonry)
+    ══════════════════════════ */
+    .gallery-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 100px;
-      max-width: 1300px;
-      margin: 0 auto;
-      align-items: center;
-    }
-    .section-label {
-      font-size: 10px;
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
-      color: var(--walnut-light);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-    .section-label::before {
-      content: '';
-      display: block;
-      width: 32px; height: 1px;
-      background: var(--walnut);
-    }
-    .about-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(36px, 4vw, 56px);
-      font-weight: 300;
-      line-height: 1.15;
-      color: var(--cream);
-      margin-bottom: 28px;
-    }
-    .about-title em { font-style: italic; color: var(--walnut-light); }
-    .about-body {
-      font-size: 12px;
-      letter-spacing: 0.08em;
-      line-height: 2.2;
-      color: var(--text-muted);
-      margin-bottom: 40px;
-    }
-    .stat-row { display: flex; gap: 48px; margin-top: 40px; }
-    .stat h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 48px;
-      font-weight: 300;
-      color: var(--walnut-light);
-      line-height: 1;
-    }
-    .stat p {
-      font-size: 10px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-top: 6px;
-    }
-    .about-image-wrap { position: relative; }
-    .about-image-wrap img {
-      width: 100%;
-      aspect-ratio: 3/4;
-      object-fit: cover;
-      display: block;
-    }
-    .about-image-badge {
-      position: absolute;
-      bottom: -24px;
-      left: -24px;
-      background: var(--walnut);
-      color: var(--cream);
-      padding: 28px 32px;
-    }
-    .about-image-badge h4 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 32px;
-      font-weight: 400;
-      line-height: 1;
-    }
-    .about-image-badge p {
-      font-size: 10px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      margin-top: 4px;
-    }
-
-    /* CATEGORIES SECTION */
-    .categories-section {
-      padding: 100px 60px;
-      background: var(--warm-gray);
-    }
-    .section-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-bottom: 60px;
-      max-width: 1300px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(32px, 4vw, 52px);
-      font-weight: 300;
-      color: var(--cream);
-      line-height: 1.1;
-    }
-    .section-title em { font-style: italic; color: var(--walnut-light); }
-    .view-all-link {
-      font-size: 10px;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--walnut-light);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      transition: gap 0.3s;
-      padding-bottom: 4px;
-      border-bottom: 1px solid rgba(139,99,71,0.3);
-    }
-    .view-all-link:hover { gap: 18px; }
-    .categories-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
       gap: 2px;
-      max-width: 1300px;
-      margin: 0 auto;
     }
-    .cat-card {
-      position: relative;
-      overflow: hidden;
-      aspect-ratio: 4/5;
+    .gallery-grid .g-wide { grid-column: span 2; }
+    .g-item {
+      position: relative; overflow: hidden; background: var(--warm-gray2);
     }
-    .cat-card img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      transition: transform 0.8s ease;
+    .g-item img {
+      width: 100%; height: 100%; object-fit: cover;
+      min-height: 160px; display: block;
+      transition: transform 0.6s ease;
     }
-    .cat-card:hover img { transform: scale(1.07); }
-    .cat-card-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(14,12,10,0.9) 0%, transparent 60%);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 36px;
-    }
-    .cat-card-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 64px;
-      font-weight: 300;
-      color: rgba(139,99,71,0.18);
-      line-height: 1;
-      position: absolute;
-      top: 20px; right: 28px;
-    }
-    .cat-card h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 28px;
-      font-weight: 300;
-      color: var(--cream);
-      margin-bottom: 6px;
-    }
-    .cat-card p {
-      font-size: 10px;
-      letter-spacing: 0.2em;
-      color: var(--text-muted);
-      text-transform: uppercase;
-    }
-    .cat-card-arrow {
-      width: 36px; height: 36px;
-      border: 1px solid rgba(139,99,71,0.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 16px;
-      color: var(--walnut-light);
-      opacity: 0;
-      transform: translateY(8px);
-      transition: all 0.35s ease;
-    }
-    .cat-card:hover .cat-card-arrow { opacity: 1; transform: translateY(0); }
-
-    /* GALLERY */
-    .gallery-section { padding: 100px 60px; }
-    .gallery-masonry {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: auto;
-      gap: 2px;
-      max-width: 1300px;
-      margin: 60px auto 0;
-    }
-    .gallery-item {
-      overflow: hidden;
-      position: relative;
-    }
-    .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
-    .gallery-item:nth-child(4) { grid-column: span 2; }
-    .gallery-item img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      min-height: 220px;
-      display: block;
-      transition: transform 0.7s ease;
-    }
-    .gallery-item:hover img { transform: scale(1.05); }
-    .gallery-item-overlay {
-      position: absolute;
-      inset: 0;
+    .g-item:hover img { transform: scale(1.05); }
+    .g-item-overlay {
+      position: absolute; inset: 0;
       background: rgba(14,12,10,0);
       transition: background 0.4s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
     }
-    .gallery-item:hover .gallery-item-overlay { background: rgba(14,12,10,0.4); }
-    .gallery-plus {
-      width: 44px; height: 44px;
+    .g-item:hover .g-item-overlay { background: rgba(14,12,10,0.42); }
+    .g-plus {
+      width: 36px; height: 36px;
       border: 1px solid var(--walnut-light);
       color: var(--walnut-light);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      opacity: 0;
-      transform: scale(0.8);
-      transition: all 0.35s ease;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; opacity: 0; transform: scale(0.8);
+      transition: all 0.3s ease;
     }
-    .gallery-item:hover .gallery-plus { opacity: 1; transform: scale(1); }
+    .g-item:hover .g-plus { opacity: 1; transform: scale(1); }
 
-    /* CTA SECTION */
-    .cta-section {
-      padding: 120px 60px;
-      background: var(--warm-gray);
-      text-align: center;
-      position: relative;
-      overflow: hidden;
+    /* ══════════════════════════
+       FAQ
+    ══════════════════════════ */
+    .faq-list { border-top: 1px solid var(--hairline); }
+    details.faq-item { border-bottom: 1px solid var(--hairline); }
+    details.faq-item summary { list-style: none; }
+    details.faq-item summary::-webkit-details-marker { display: none; }
+    .faq-q {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 0; cursor: pointer; gap: 16px;
+      font-size: 14px; font-weight: 400; letter-spacing: 0.04em; color: var(--cream);
+      transition: color 0.15s; user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
-    .cta-section::before {
-      content: 'IF';
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 360px;
-      font-weight: 300;
-      color: rgba(139,99,71,0.05);
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%,-50%);
-      pointer-events: none;
-      letter-spacing: -0.05em;
-      white-space: nowrap;
+    @media (hover:hover) { .faq-q:hover { color: var(--walnut-light); } }
+    .faq-chevron {
+      flex-shrink: 0; color: var(--muted);
+      transition: transform 0.26s cubic-bezier(0.22,1,0.36,1), color 0.15s;
     }
-    .cta-section .section-label { justify-content: center; }
-    .cta-section .section-label::before { display: none; }
-    .cta-section .section-label::after {
-      content: '';
-      display: block;
-      width: 32px; height: 1px;
-      background: var(--walnut);
-    }
-    .cta-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(40px, 6vw, 80px);
-      font-weight: 300;
-      color: var(--cream);
-      line-height: 1.1;
-      margin-bottom: 20px;
-      position: relative;
-    }
-    .cta-title em { font-style: italic; color: var(--walnut-light); }
-    .cta-sub {
-      font-size: 12px;
-      letter-spacing: 0.12em;
-      color: var(--text-muted);
-      margin-bottom: 48px;
-      position: relative;
-    }
-    .cta-buttons { display: flex; gap: 16px; justify-content: center; position: relative; }
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      padding: 16px 40px;
-      background: var(--walnut);
-      color: var(--cream);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      text-decoration: none;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.35s;
-    }
-    .btn-primary::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: var(--dark);
-      transform: translateX(-101%);
-      transition: transform 0.4s ease;
-    }
-    .btn-primary:hover { color: var(--walnut-light); }
-    .btn-primary:hover::before { transform: translateX(0); }
-    .btn-primary span, .btn-primary svg { position: relative; z-index: 1; }
-    .btn-outline {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      padding: 16px 40px;
-      border: 1px solid rgba(139,99,71,0.4);
-      color: var(--walnut-light);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      text-decoration: none;
-      transition: all 0.35s;
-    }
-    .btn-outline:hover { background: rgba(139,99,71,0.08); border-color: var(--walnut); }
+    details[open] .faq-chevron { transform: rotate(180deg); color: var(--walnut-light); }
+    .faq-a-inner { padding-bottom: 18px; }
+    .faq-a-inner p { font-size: 13px; font-weight: 300; line-height: 1.9; letter-spacing: 0.04em; color: var(--muted); }
 
-    /* FOOTER */
-    footer {
-      background: #070605;
-      padding: 80px 60px 40px;
+    /* ══════════════════════════
+       BOTTOM ACTION BAR
+    ══════════════════════════ */
+    .bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+      height: var(--bar-h);
+      padding-bottom: var(--safe);
+      background: rgba(14,12,10,0.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--hairline);
+      display: flex; align-items: center; justify-content: stretch;
     }
-    .footer-top {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 60px;
-      padding-bottom: 60px;
-      border-bottom: 1px solid rgba(139,99,71,0.08);
-    }
-    .footer-brand .logo { display: inline-block; margin-bottom: 20px; font-size: 18px; }
-    .footer-brand p {
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      line-height: 2;
-      color: var(--text-muted);
-      max-width: 280px;
-    }
-    .footer-heading {
-      font-size: 10px;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--walnut-light);
-      margin-bottom: 24px;
-    }
-    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
-    .footer-links a {
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      color: var(--text-muted);
+    .bar-inner { max-width: 480px; margin: 0 auto; width: 100%; padding: 0 16px; display: flex; align-items: center; gap: 10px; }
+    .bar-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      border: none; background: transparent; color: var(--muted);
+      font-family: var(--font); font-size: 8px; letter-spacing: 0.18em; text-transform: uppercase;
+      cursor: pointer; padding: 0; min-width: 48px;
+      transition: color 0.18s;
+      -webkit-tap-highlight-color: transparent;
       text-decoration: none;
-      transition: color 0.3s;
     }
-    .footer-links a:hover { color: var(--cream); }
-    .footer-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: 32px;
-    }
-    .footer-bottom p {
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      color: rgba(154,144,130,0.5);
-    }
-    .footer-bottom p span { color: var(--walnut-light); }
-    .social-links { display: flex; gap: 16px; }
-    .social-link {
+    .bar-btn:active { opacity: 0.7; }
+    @media (hover:hover) { .bar-btn:hover { color: var(--walnut-light); } }
+    .bar-ico {
       width: 36px; height: 36px;
-      border: 1px solid rgba(139,99,71,0.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 13px;
-      transition: all 0.3s;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--hairline-hard);
+      transition: background 0.18s, border-color 0.18s;
     }
-    .social-link:hover {
-      border-color: var(--walnut);
-      color: var(--walnut-light);
-      background: rgba(139,99,71,0.05);
-    }
+    .b-call .bar-ico { background: var(--walnut); border-color: var(--walnut); color: var(--cream); }
+    .b-call { color: var(--cream); }
+    .bar-sep { flex: 1; }
 
-    /* REVEAL ANIMATIONS */
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
+    /* ══════════════════════════
+       FOOTER
+    ══════════════════════════ */
+    .footer {
+      background: #070605;
+      border-top: 1px solid var(--hairline);
+      padding: 40px 0 32px;
     }
+    .footer-logo { font-family: var(--disp); font-size: 20px; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cream); display: block; margin-bottom: 10px; }
+    .footer-logo span { color: var(--walnut-light); }
+    .footer-tagline { font-size: 12px; font-weight: 300; color: var(--muted); line-height: 1.8; letter-spacing: 0.04em; margin-bottom: 28px; }
+
+    .footer-heading { font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--walnut-light); margin-bottom: 16px; }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+    .footer-links a { font-size: 12px; font-weight: 300; letter-spacing: 0.04em; color: var(--muted); transition: color 0.22s; }
+    .footer-links a:hover { color: var(--cream); }
+
+    .footer-rule { height: 1px; background: var(--hairline); margin: 24px 0; }
+    .footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .footer-legal { font-size: 10px; letter-spacing: 0.08em; color: rgba(154,144,130,0.5); }
+    .footer-legal span { color: var(--walnut-light); }
+    .footer-soc-row { display: flex; gap: 10px; }
+    .footer-soc {
+      width: 34px; height: 34px;
+      border: 1px solid var(--hairline);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; color: var(--muted);
+      transition: border-color 0.22s, color 0.22s, background 0.22s;
+    }
+    .footer-soc:hover { border-color: var(--walnut); color: var(--walnut-light); background: rgba(139,99,71,0.06); }
+
+    /* ══════════════════════════
+       LIGHTBOX / BOTTOM SHEET
+    ══════════════════════════ */
+    .lb-backdrop {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(7,6,5,0.82);
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.28s ease;
+    }
+    .lb-backdrop.open { opacity: 1; pointer-events: all; }
+    .lb-sheet {
+      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%) translateY(100%);
+      z-index: 201; width: 100%; max-width: 480px;
+      background: var(--warm-gray2);
+      border-top: 1px solid var(--hairline-hard);
+      border-left: 1px solid var(--hairline);
+      border-right: 1px solid var(--hairline);
+      padding: 20px 20px 32px;
+      transition: transform 0.32s cubic-bezier(0.22,1,0.36,1);
+    }
+    .lb-sheet.open { transform: translateX(-50%) translateY(0); }
+    .lb-handle { width: 36px; height: 3px; background: var(--hairline-hard); margin: 0 auto 18px; }
+    .lb-title { font-family: var(--disp); font-size: 26px; font-weight: 300; color: var(--cream); margin-bottom: 8px; }
+    .lb-desc { font-size: 13px; font-weight: 300; line-height: 1.9; color: var(--muted); margin-bottom: 20px; }
+    .lb-actions { display: flex; gap: 10px; }
+
+    /* ══════════════════════════
+       ANIMATIONS / REVEALS
+    ══════════════════════════ */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.72s ease, transform 0.72s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
-    .reveal-delay-1 { transition-delay: 0.1s; }
-    .reveal-delay-2 { transition-delay: 0.2s; }
-    .reveal-delay-3 { transition-delay: 0.3s; }
 
-    /* RESPONSIVE */
-    @media (max-width: 900px) {
-      nav, .topbar { padding: 0 24px; }
-      .hero-content { padding: 0 24px 120px; }
-      .category-panel { display: none; }
-      .about { grid-template-columns: 1fr; padding: 80px 24px; gap: 60px; }
-      .categories-grid { grid-template-columns: 1fr 1fr; }
-      .gallery-masonry { grid-template-columns: 1fr 1fr; }
-      .gallery-item:nth-child(1) { grid-column: span 1; grid-row: span 1; }
-      .gallery-item:nth-child(4) { grid-column: span 1; }
-      .footer-top { grid-template-columns: 1fr 1fr; }
-      .features-strip-inner { flex-wrap: wrap; }
-      .feature-item { min-width: 50%; }
-      .cta-section { padding: 80px 24px; }
-      .categories-section, .gallery-section { padding: 80px 24px; }
+    @keyframes fadeup {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fu { animation: fadeup 0.9s cubic-bezier(0.22,1,0.36,1) both; }
+    .fu-2 { animation-delay: 0.12s; }
+    .fu-3 { animation-delay: 0.22s; }
+    .fu-4 { animation-delay: 0.34s; }
+    .fu-5 { animation-delay: 0.44s; }
+
+    /* visually hidden */
+    .vh {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
     }
   </style>
 </head>
 <body>
 
-
-
-  <!-- TOP BAR -->
-  <div class="topbar">
-    <a href="tel:+919198126666">
-      <span class="icon">📞</span>
-      +91 9198126666
-    </a>
-    <div class="topbar-divider"></div>
-    <a href="mailto:InternatinalFurnishers@gmail.com">
-      <span class="icon">✉</span>
-      InternatinalFurnishers@gmail.com
-    </a>
+  <!-- ── MARQUEE ── -->
+  <div class="marquee" aria-hidden="true">
+    <div class="mq-track">
+      <span class="mq-item">Premium Craftsmanship</span><span class="mq-sep">·</span>
+      <span class="mq-item">Since 1998</span><span class="mq-sep">·</span>
+      <span class="mq-item">Varanasi</span><span class="mq-sep">·</span>
+      <span class="mq-item">Custom Designs</span><span class="mq-sep">·</span>
+      <span class="mq-item">5-Year Warranty</span><span class="mq-sep">·</span>
+      <span class="mq-item">4000+ Happy Homes</span><span class="mq-sep">·</span>
+      <span class="mq-item">Premium Craftsmanship</span><span class="mq-sep">·</span>
+      <span class="mq-item">Since 1998</span><span class="mq-sep">·</span>
+      <span class="mq-item">Varanasi</span><span class="mq-sep">·</span>
+      <span class="mq-item">Custom Designs</span><span class="mq-sep">·</span>
+      <span class="mq-item">5-Year Warranty</span><span class="mq-sep">·</span>
+      <span class="mq-item">4000+ Happy Homes</span><span class="mq-sep">·</span>
+    </div>
   </div>
 
-  <!-- NAV -->
-  <nav id="mainNav" style="top:40px">
-    <a href="#" class="logo"><span>I</span>NTERNATIONAL <span>F</span>URNISHERS</a>
-    <ul class="nav-links">
-      <li><a href="#">Home</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="categories.html">Category</a></li>
-      <li><a href="#gallery">Gallery</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
+  <!-- ── NAV ── -->
+  <nav class="nav" id="mainNav" role="navigation" aria-label="International Furnishers navigation">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo" aria-label="International Furnishers"><span>I</span>NTERNATIONAL <span>F</span>URNISHERS</a>
+      <a href="tel:+919198126666" class="nav-cta btn btn-sm btn-walnut" aria-label="Call us">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+        <span>Enquire</span>
+      </a>
+    </div>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero">
+  <main id="main">
+
+  <!-- ── HERO ── -->
+  <section class="hero" aria-label="International Furnishers — premium furniture Varanasi">
     <div class="hero-bg" id="heroBg"></div>
-    <div class="hero-overlay"></div>
-    <div class="hero-grain"></div>
+    <div class="hero-ghost" aria-hidden="true">IF</div>
 
-    <div class="hero-content">
-      <div class="hero-eyebrow">Crafted For Excellence</div>
-      <h1 class="hero-title">
-        Precise Concept<br>
-        Design For<br>
-        <em>Stylish Living</em>
+    <div class="hero-inner">
+      <div class="hero-eyebrow fu fu-2">
+        <span class="t-eye">Crafted for Excellence</span>
+      </div>
+      <h1 class="t-disp hero-title fu fu-3">
+        PRECISE<br>DESIGN<br><em>FOR LIVING</em>
       </h1>
-      <p class="hero-desc">
+      <p class="hero-sub fu fu-4">
         Timeless furniture. Exceptional craftsmanship.<br>
-        Every piece tells a story of refined taste.
+        Every piece tells a story of <strong style="font-weight:400;color:rgba(245,240,232,0.85)">refined taste</strong>.
       </p>
-      <a href="#categories" class="hero-cta">
-        <span>Explore Collection</span>
-        <svg width="16" height="12" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M0 6h14M9 1l5 5-5 5"/>
-        </svg>
-      </a>
-    </div>
-
-    <div class="category-panel">
-      <a href="categories.html?category=sofa" class="cat-item">
-        <svg viewBox="0 0 40 32"><rect x="2" y="14" width="36" height="12" rx="2"/><path d="M6 14V10a4 4 0 014-4h20a4 4 0 014 4v4"/><path d="M2 22v4M38 22v4"/></svg>
-        <span>Sofa</span>
-      </a>
-      <a href="categories.html?category=domestic&subcategory=bed" class="cat-item">
-        <svg viewBox="0 0 40 32"><rect x="2" y="12" width="36" height="14" rx="2"/><rect x="6" y="6" width="28" height="6" rx="1"/><path d="M2 22v6M38 22v6"/></svg>
-        <span>Beds</span>
-      </a>
-      <a href="categories.html?category=dining-table" class="cat-item">
-        <svg viewBox="0 0 40 32"><rect x="4" y="10" width="32" height="20" rx="1"/><path d="M10 10V8a2 2 0 012-2h16a2 2 0 012 2v2"/><path d="M4 22h32"/><path d="M10 30v-8M30 30v-8"/></svg>
-        <span>Dining</span>
-      </a>
-      <a href="categories.html?category=wardrobe" class="cat-item">
-        <svg viewBox="0 0 40 32"><rect x="8" y="2" width="24" height="28" rx="1"/><circle cx="20" cy="16" r="3"/><path d="M8 10h24M8 22h24"/></svg>
-        <span>Wardrobe</span>
-      </a>
-      <a href="categories.html?category=domestic&subcategory=dressing-table" class="cat-item">
-        <svg viewBox="0 0 40 32"><rect x="2" y="8" width="36" height="22" rx="1"/><path d="M2 16h36"/><path d="M14 8V4M26 8V4"/></svg>
-        <span>Storage</span>
-      </a>
-      <a href="categories.html?category=office" class="cat-item">
-        <svg viewBox="0 0 40 32"><rect x="4" y="4" width="32" height="20" rx="2"/><path d="M4 24l4 6M36 24l-4 6"/><path d="M12 4v20M28 4v20"/></svg>
-        <span>Office</span>
-      </a>
-    </div>
-
-    <div class="scroll-hint">
-      <span>Scroll</span>
-      <div class="scroll-line"></div>
-    </div>
-  </section>
-
-  <!-- FEATURES STRIP -->
-  <div class="features-strip">
-    <div class="features-strip-inner">
-      <div class="feature-item">
-        <div class="feature-icon">✦</div>
-        <div class="feature-text">
-          <h4>Premium Materials</h4>
-          <p>Only the finest woods &amp; fabrics</p>
-        </div>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">◈</div>
-        <div class="feature-text">
-          <h4>Custom Design</h4>
-          <p>Tailored to your exact vision</p>
-        </div>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">⬡</div>
-        <div class="feature-text">
-          <h4>Expert Assembly</h4>
-          <p>Professional white-glove delivery</p>
-        </div>
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">◇</div>
-        <div class="feature-text">
-          <h4>5-Year Warranty</h4>
-          <p>Craftsmanship guaranteed</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ABOUT -->
-  <section class="about" id="about">
-    <div>
-      <div class="section-label reveal">Our Story</div>
-      <h2 class="about-title reveal reveal-delay-1">
-        Where <em>Craft</em><br>Meets Character
-      </h2>
-      <p class="about-body reveal reveal-delay-2">
-        Founded on the belief that every home deserves furniture that reflects its owner's soul, International Furnishers has been creating heirloom-quality pieces since 1998. Each item is hand-selected, master-crafted, and designed to endure — not just trends, but generations.
-      </p>
-      <p class="about-body reveal reveal-delay-2" style="margin-top:-20px">
-        From our workshop in Lucknow to living rooms across India, we bring together time-honoured joinery techniques and contemporary sensibility.
-      </p>
-      <div class="stat-row reveal reveal-delay-3">
-        <div class="stat"><h3>25+</h3><p>Years of Craft</p></div>
-        <div class="stat"><h3>4k+</h3><p>Happy Homes</p></div>
-        <div class="stat"><h3>200+</h3><p>Unique Designs</p></div>
-      </div>
-    </div>
-    <div class="about-image-wrap reveal">
-      <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=700&q=80" alt="Luxury furniture showroom">
-      <div class="about-image-badge">
-        <h4>Est.</h4>
-        <p>1998 · Lucknow</p>
+      <div class="btn-row fu fu-5">
+        <a href="#categories" class="btn btn-walnut">
+          <span>Explore Collection</span>
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M0 5h12M7 1l5 4-5 4"/></svg>
+        </a>
+        <a href="tel:+919198126666" class="btn btn-ghost">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+          <span>Call Now</span>
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- CATEGORIES -->
-  <section class="categories-section" id="categories">
-    <div class="section-header reveal">
-      <div>
-        <div class="section-label">Browse By Room</div>
-        <h2 class="section-title">Our <em>Collections</em></h2>
+  <!-- ── CATEGORIES ── -->
+  <section class="sec reveal" id="categories" aria-labelledby="sec-cat-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="t-eye sec-eye">Browse By Category</div>
+        <h2 class="t-xl sec-title" id="sec-cat-title">Our <em>Collections</em></h2>
       </div>
-      <a href="categories.html" class="view-all-link">
-        View All
-        <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M0 5h12M7 1l5 4-5 4"/>
-        </svg>
-      </a>
+      <div class="cards-grid">
+
+        <div class="card" onclick="openLb('Domestic Furniture','Sofas, wardrobes, beds and more — handcrafted pieces built for the heart of your home. Premium wood, elegant finishes.','https://www.internationalfurnishers.in/Gallery/SubCategory?CategoryId=2')">
+          <div class="card-img">
+            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400&q=75" alt="Domestic furniture" loading="lazy" decoding="async">
+          </div>
+          <div class="card-num">01</div>
+          <div class="card-meta">
+            <div class="card-name">Domestic</div>
+            <div class="card-sub">Sofas · Beds · Wardrobes</div>
+          </div>
+        </div>
+
+        <div class="card" onclick="openLb('Office Furniture','Ergonomic desks, executive chairs, conference tables and storage solutions — spaces designed for performance.','https://www.internationalfurnishers.in/Gallery/SubCategory?CategoryId=3')">
+          <div class="card-img">
+            <img src="https://images.unsplash.com/photo-1505693314120-0d443867891c?w=400&q=75" alt="Office furniture" loading="lazy" decoding="async">
+          </div>
+          <div class="card-num">02</div>
+          <div class="card-meta">
+            <div class="card-name">Office</div>
+            <div class="card-sub">Desks · Chairs · Cabinets</div>
+          </div>
+        </div>
+
+        <div class="card" onclick="openLb('Wardrobe','Custom wardrobes designed to fit your space perfectly — sliding doors, in-built lighting and premium finishes.','https://www.internationalfurnishers.in/Product/Product?SubCategoryId=7')">
+          <div class="card-img">
+            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=75" alt="Wardrobe" loading="lazy" decoding="async">
+          </div>
+          <div class="card-num">03</div>
+          <div class="card-meta">
+            <div class="card-name">Wardrobe</div>
+            <div class="card-sub">Custom · Sliding · Built-in</div>
+          </div>
+        </div>
+
+        <div class="card" onclick="openLb('Dining Table','Solid wood dining tables and matching chairs — built to bring families together, built to last a lifetime.','https://www.internationalfurnishers.in/Product/Product?SubCategoryId=8')">
+          <div class="card-img">
+            <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&q=75" alt="Dining table" loading="lazy" decoding="async">
+          </div>
+          <div class="card-num">04</div>
+          <div class="card-meta">
+            <div class="card-name">Dining</div>
+            <div class="card-sub">Tables · Chairs · Sets</div>
+          </div>
+        </div>
+
+        <div class="card" onclick="openLb('Sofa','Luxurious sofas and sectionals in premium fabrics and leather — comfort you can see, quality you can feel.','https://www.internationalfurnishers.in/Gallery/SubCategoryDetails?Category=Domestic%20Furniture&SubCategoryId=9')">
+          <div class="card-img">
+            <img src="https://images.unsplash.com/photo-1493663284031-b7e3aaa4e5a2?w=400&q=75" alt="Sofa" loading="lazy" decoding="async">
+          </div>
+          <div class="card-num">05</div>
+          <div class="card-meta">
+            <div class="card-name">Sofa</div>
+            <div class="card-sub">Sectional · L-Shape · Classic</div>
+          </div>
+        </div>
+
+        <div class="card" onclick="openLb('Mattress','Memory foam, orthopedic and spring mattresses — engineered for restorative sleep, night after night.','https://www.internationalfurnishers.in/Gallery/SubCategory?CategoryId=4')">
+          <div class="card-img">
+            <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400&q=75" alt="Mattress" loading="lazy" decoding="async">
+          </div>
+          <div class="card-num">06</div>
+          <div class="card-meta">
+            <div class="card-name">Mattress</div>
+            <div class="card-sub">Memory · Ortho · Spring</div>
+          </div>
+        </div>
+
+      </div>
     </div>
-    <div class="categories-grid">
-      <a href="categories.html?category=sofa" class="cat-card reveal">
-        <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80" alt="Living Room">
-        <div class="cat-card-overlay">
-          <div class="cat-card-num">01</div>
-          <h3>Living Room</h3>
-          <p>Sofas · Armchairs · Coffee Tables</p>
-          <div class="cat-card-arrow">→</div>
-        </div>
-      </a>
-      <a href="categories.html?category=domestic" class="cat-card reveal reveal-delay-1">
-        <img src="https://images.unsplash.com/photo-1505693314120-0d443867891c?w=600&q=80" alt="Bedroom">
-        <div class="cat-card-overlay">
-          <div class="cat-card-num">02</div>
-          <h3>Bedroom</h3>
-          <p>Beds · Wardrobes · Dressers</p>
-          <div class="cat-card-arrow">→</div>
-        </div>
-      </a>
-      <a href="categories.html?category=dining-table" class="cat-card reveal reveal-delay-2">
-        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80" alt="Dining">
-        <div class="cat-card-overlay">
-          <div class="cat-card-num">03</div>
-          <h3>Dining Room</h3>
-          <p>Tables · Chairs · Buffets</p>
-          <div class="cat-card-arrow">→</div>
-        </div>
+  </section>
+
+  <!-- ── CAMPAIGN BLOCK ── -->
+  <section class="campaign" aria-label="International Furnishers philosophy">
+    <img class="campaign-bg" src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&q=70" alt="" loading="lazy" decoding="async" aria-hidden="true">
+    <div class="campaign-inner">
+      <div class="t-eye" style="color:rgba(168,125,95,0.75);margin-bottom:14px;letter-spacing:0.3em">Our Philosophy</div>
+      <h2 class="campaign-title">Where<br><em>Craft</em><br>Meets<br>Character.</h2>
+      <p class="campaign-sub">Every piece is hand-selected, master-crafted, and designed to endure — not just trends, but generations.</p>
+      <a href="#contact" class="btn btn-walnut">
+        <span>Visit Showroom</span>
+        <svg width="13" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M0 5h12M7 1l5 4-5 4"/></svg>
       </a>
     </div>
   </section>
 
-  <!-- GALLERY -->
-  <section class="gallery-section" id="gallery">
-    <div style="max-width:1300px;margin:0 auto" class="reveal">
-      <div class="section-label">Portfolio</div>
-      <h2 class="section-title">Spaces We've <em>Transformed</em></h2>
-    </div>
-    <div class="gallery-masonry">
-      <div class="gallery-item reveal">
-        <img src="https://images.unsplash.com/photo-1493663284031-b7e3aaa4e5a2?w=800&q=80" alt="">
-        <div class="gallery-item-overlay"><div class="gallery-plus">+</div></div>
+  <!-- ── WHY US ── -->
+  <section class="sec sec-warm reveal" aria-labelledby="sec-why-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="t-eye sec-eye">Why Choose Us</div>
+        <h2 class="t-xl sec-title" id="sec-why-title">Our Promise</h2>
       </div>
-      <div class="gallery-item reveal reveal-delay-1">
-        <img src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=500&q=80" alt="">
-        <div class="gallery-item-overlay"><div class="gallery-plus">+</div></div>
-      </div>
-      <div class="gallery-item reveal reveal-delay-2">
-        <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=500&q=80" alt="">
-        <div class="gallery-item-overlay"><div class="gallery-plus">+</div></div>
-      </div>
-      <div class="gallery-item reveal reveal-delay-1">
-        <img src="https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=800&q=80" alt="">
-        <div class="gallery-item-overlay"><div class="gallery-plus">+</div></div>
-      </div>
-      <div class="gallery-item reveal reveal-delay-2">
-        <img src="https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=500&q=80" alt="">
-        <div class="gallery-item-overlay"><div class="gallery-plus">+</div></div>
+      <div class="disc-list">
+        <div class="disc-row">
+          <div class="disc-icon">✦</div>
+          <div>
+            <div class="disc-title">Premium Materials Only</div>
+            <div class="disc-desc">Only the finest solid woods, premium hardware and quality fabrics — no shortcuts, ever.</div>
+          </div>
+        </div>
+        <div class="disc-row">
+          <div class="disc-icon">◈</div>
+          <div>
+            <div class="disc-title">Custom-Made to Your Vision</div>
+            <div class="disc-desc">Every piece is tailored to your exact space, style and requirements — nothing off-the-shelf.</div>
+          </div>
+        </div>
+        <div class="disc-row">
+          <div class="disc-icon">⬡</div>
+          <div>
+            <div class="disc-title">Expert Assembly & Delivery</div>
+            <div class="disc-desc">White-glove delivery and professional installation — your furniture arrives perfect, every time.</div>
+          </div>
+        </div>
+        <div class="disc-row">
+          <div class="disc-icon">◇</div>
+          <div>
+            <div class="disc-title">5-Year Craftsmanship Warranty</div>
+            <div class="disc-desc">We stand behind every joint, finish and fitting — full warranty because we build to last.</div>
+          </div>
+        </div>
+        <div class="disc-row">
+          <div class="disc-icon">✧</div>
+          <div>
+            <div class="disc-title">25+ Years of Trust in Varanasi</div>
+            <div class="disc-desc">Over 4,000 homes furnished since 1998. Our reputation is built piece by piece, home by home.</div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- CTA -->
-  <section class="cta-section" id="contact">
-    <div class="section-label reveal">Get In Touch</div>
-    <h2 class="cta-title reveal reveal-delay-1">
-      Let's Design Your<br><em>Dream Space</em>
-    </h2>
-    <p class="cta-sub reveal reveal-delay-2">
-      Visit our showroom or reach out — our design consultants are here to help.
-    </p>
-    <div class="cta-buttons reveal reveal-delay-3">
-      <a href="tel:+919198126666" class="btn-primary">
-        <span>Call Us Now</span>
-        <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M0 5h12M7 1l5 4-5 4"/>
-        </svg>
-      </a>
-      <a href="mailto:InternatinalFurnishers@gmail.com" class="btn-outline">Send Enquiry</a>
+  <!-- ── ABOUT ── -->
+  <section class="sec reveal" id="about" aria-labelledby="sec-about-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="t-eye sec-eye">Who We Are</div>
+        <h2 class="t-xl sec-title" id="sec-about-title">About Us</h2>
+      </div>
+
+      <div class="about-tabs">
+        <button class="about-tab active" onclick="switchAbout('store',this)">Our Story</button>
+        <button class="about-tab" onclick="switchAbout('owner',this)">Our Showroom</button>
+      </div>
+
+      <div class="about-panel active" id="about-store">
+        <p class="about-lead">Varanasi's most trusted name in premium handcrafted furniture.</p>
+        <p class="about-body">Founded on the belief that every home deserves furniture that reflects its owner's soul, <strong style="color:var(--cream);font-weight:400">International Furnishers</strong> has been creating heirloom-quality pieces since 1998. Each item is hand-selected, master-crafted, and designed to endure generations.</p>
+        <br>
+        <p class="about-body">From our workshop in Varanasi to living rooms across India, we bring time-honoured joinery techniques and contemporary sensibility together — creating spaces that speak to the soul.</p>
+
+        <div class="proof-grid">
+          <div class="proof-item">
+            <div class="proof-top">Experience</div>
+            <div class="proof-main">25+</div>
+            <div class="proof-note">Years of craft</div>
+          </div>
+          <div class="proof-item">
+            <div class="proof-top">Homes Furnished</div>
+            <div class="proof-main">4k+</div>
+            <div class="proof-note">Happy families</div>
+          </div>
+          <div class="proof-item">
+            <div class="proof-top">Designs</div>
+            <div class="proof-main">200+</div>
+            <div class="proof-note">Unique collections</div>
+          </div>
+          <div class="proof-item">
+            <div class="proof-top">Warranty</div>
+            <div class="proof-main">5 Yr</div>
+            <div class="proof-note">Craftsmanship guarantee</div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <a href="tel:+919198126666" class="btn btn-walnut"><span>Contact Us</span></a>
+          <a href="#contact" class="btn btn-outline"><span>Visit Showroom</span></a>
+        </div>
+      </div>
+
+      <div class="about-panel" id="about-owner">
+        <div class="owner-card">
+          <div class="owner-card-header">
+            <div class="owner-avatar">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(139,99,71,0.5)" stroke-width="1.2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            </div>
+            <div class="owner-eyebrow">Est. 1998 · Varanasi</div>
+            <div class="owner-name">International Furnishers</div>
+            <div class="owner-tags">
+              <span class="owner-tag">✦ Premium Quality</span>
+              <span class="owner-tag">✦ Custom Made</span>
+              <span class="owner-tag">✦ 5-Yr Warranty</span>
+            </div>
+          </div>
+
+          <div class="owner-stats">
+            <div class="owner-stat">
+              <div class="owner-stat-num">25+</div>
+              <div class="owner-stat-lbl">Years</div>
+            </div>
+            <div class="owner-stat">
+              <div class="owner-stat-num">4k+</div>
+              <div class="owner-stat-lbl">Homes</div>
+            </div>
+            <div class="owner-stat">
+              <div class="owner-stat-num">200+</div>
+              <div class="owner-stat-lbl">Designs</div>
+            </div>
+          </div>
+
+          <div class="owner-card-body">
+            <p class="owner-bio">Our showroom at D-35/76 Jangamwadi, Varanasi showcases over 200 unique designs across domestic, office, and specialty furniture. Walk in and let our design consultants help you envision your perfect space.</p>
+            <div class="owner-quote">
+              <div class="owner-quote-bar"></div>
+              <div class="owner-quote-text">"We don't just build furniture — we craft the backdrop of your life's most meaningful moments."</div>
+            </div>
+            <div class="owner-actions">
+              <a href="tel:+919198126666" class="btn btn-walnut">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+                <span>Call Us</span>
+              </a>
+              <a href="mailto:InternatinalFurnishers@gmail.com" class="btn btn-outline"><span>Email Us</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-top">
-      <div class="footer-brand">
-        <a href="#" class="logo"><span>I</span>NTERNATIONAL <span>F</span>URNISHERS</a>
-        <p>Crafting spaces that speak to the soul. Premium furniture for discerning homes across India since 1998.</p>
+  <!-- ── GALLERY ── -->
+  <section class="sec sec-warm reveal" id="gallery" aria-labelledby="sec-gallery-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="t-eye sec-eye">Portfolio</div>
+        <h2 class="t-xl sec-title" id="sec-gallery-title">Spaces We've <em>Transformed</em></h2>
       </div>
-      <div>
-        <div class="footer-heading">Navigate</div>
-        <ul class="footer-links">
-          <li><a href="#">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="categories.html">Category</a></li>
-          <li><a href="#gallery">Gallery</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="footer-heading">Categories</div>
-        <ul class="footer-links">
-          <li><a href="categories.html?category=sofa">Living Room</a></li>
-          <li><a href="categories.html?category=domestic">Bedroom</a></li>
-          <li><a href="categories.html?category=dining-table">Dining Room</a></li>
-          <li><a href="categories.html?category=office">Home Office</a></li>
-          <li><a href="categories.html">All Collections</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="footer-heading">Contact</div>
-        <ul class="footer-links">
-          <li><a href="tel:+919198126666">+91 9198126666</a></li>
-          <li><a href="mailto:InternatinalFurnishers@gmail.com">InternatinalFurnishers<br>@gmail.com</a></li>
-          <li><a href="#">Lucknow, Uttar Pradesh</a></li>
-        </ul>
+      <div class="gallery-grid">
+        <div class="g-item g-wide">
+          <img src="https://images.unsplash.com/photo-1493663284031-b7e3aaa4e5a2?w=800&q=75" alt="Living room transformation" loading="lazy">
+          <div class="g-item-overlay"><div class="g-plus">+</div></div>
+        </div>
+        <div class="g-item">
+          <img src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=500&q=75" alt="Bedroom furniture" loading="lazy">
+          <div class="g-item-overlay"><div class="g-plus">+</div></div>
+        </div>
+        <div class="g-item">
+          <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=500&q=75" alt="Dining room" loading="lazy">
+          <div class="g-item-overlay"><div class="g-plus">+</div></div>
+        </div>
+        <div class="g-item g-wide">
+          <img src="https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=800&q=75" alt="Office furniture" loading="lazy">
+          <div class="g-item-overlay"><div class="g-plus">+</div></div>
+        </div>
+        <div class="g-item">
+          <img src="https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=500&q=75" alt="Study room" loading="lazy">
+          <div class="g-item-overlay"><div class="g-plus">+</div></div>
+        </div>
+        <div class="g-item">
+          <img src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&q=75" alt="Luxury wardrobe" loading="lazy">
+          <div class="g-item-overlay"><div class="g-plus">+</div></div>
+        </div>
       </div>
     </div>
-    <div class="footer-bottom">
-      <p>© 2025 <span>International Furnishers</span>. All rights reserved.</p>
-      <div class="social-links">
-        <a href="#" class="social-link">f</a>
-        <a href="#" class="social-link">in</a>
-        <a href="#" class="social-link">ig</a>
+  </section>
+
+  <!-- ── FAQ ── -->
+  <section class="sec reveal" aria-labelledby="sec-faq-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="t-eye sec-eye">Common Questions</div>
+        <h2 class="t-xl sec-title" id="sec-faq-title">FAQ</h2>
+      </div>
+      <div class="faq-list">
+
+        <details class="faq-item">
+          <summary>
+            <div class="faq-q">
+              <span>Do you offer custom furniture designs?</span>
+              <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </summary>
+          <div class="faq-a-inner"><p>Yes — every piece is made-to-order. Our design consultants work with you to understand your space, style and budget, then craft a unique piece tailored to your exact requirements.</p></div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <div class="faq-q">
+              <span>How long does it take to deliver?</span>
+              <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </summary>
+          <div class="faq-a-inner"><p>Standard pieces typically take 3–4 weeks. Fully custom designs may take 6–8 weeks depending on complexity. We provide assembly and professional installation as part of our delivery service.</p></div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <div class="faq-q">
+              <span>What materials do you use?</span>
+              <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </summary>
+          <div class="faq-a-inner"><p>We use premium solid woods including teak, sheesham, and engineered hardwoods, complemented by high-quality hardware and fabrics. All materials are ethically sourced and selected for longevity.</p></div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <div class="faq-q">
+              <span>Do you offer a warranty?</span>
+              <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </summary>
+          <div class="faq-a-inner"><p>Every piece of furniture comes with a 5-year craftsmanship warranty. This covers structural integrity, joinery, and hardware. We stand behind every item we make.</p></div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <div class="faq-q">
+              <span>Can I visit your showroom?</span>
+              <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </summary>
+          <div class="faq-a-inner"><p>Absolutely. Our showroom is located at D-35/76 Jangamwadi, Varanasi. We're open Monday to Saturday, 10 AM to 7 PM. Walk in or call ahead to arrange a design consultation at no charge.</p></div>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACT / CTA ── -->
+  <section class="sec sec-warm2 reveal" id="contact" aria-labelledby="sec-contact-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="t-eye sec-eye">Get In Touch</div>
+        <h2 class="t-xl sec-title" id="sec-contact-title">Let's Design Your <em>Dream Space</em></h2>
+      </div>
+
+      <div class="loc-tabs">
+        <button class="loc-tab active" onclick="switchLoc('showroom',this)">Showroom</button>
+        <button class="loc-tab" onclick="switchLoc('hours',this)">Hours</button>
+      </div>
+
+      <div class="loc-panel active" id="loc-showroom">
+        <div class="loc-info">
+          <div class="loc-info-row">
+            <div class="loc-info-icon">📍</div>
+            <div>
+              <div class="loc-info-label">Address</div>
+              <div class="loc-info-val">D-35/76 Jangamwadi<br>Varanasi, Uttar Pradesh</div>
+            </div>
+          </div>
+          <div class="loc-info-row">
+            <div class="loc-info-icon">📞</div>
+            <div>
+              <div class="loc-info-label">Phone</div>
+              <div class="loc-info-val">+91 9198126666</div>
+            </div>
+          </div>
+          <div class="loc-info-row">
+            <div class="loc-info-icon">✉</div>
+            <div>
+              <div class="loc-info-label">Email</div>
+              <div class="loc-info-val">InternatinalFurnishers@gmail.com</div>
+            </div>
+          </div>
+        </div>
+        <div class="loc-btn-grid">
+          <a href="https://maps.google.com/?q=D-35/76+Jangamwadi+Varanasi" target="_blank" rel="noopener" class="btn btn-walnut"><span>Get Directions</span><svg width="13" height="10" viewBox="0 0 14 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M0 5h12M7 1l5 4-5 4"/></svg></a>
+          <a href="tel:+919198126666" class="btn btn-outline"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg><span>Call Now</span></a>
+        </div>
+      </div>
+
+      <div class="loc-panel" id="loc-hours">
+        <div class="timing-list" id="timings-list"></div>
+      </div>
+
+    </div>
+  </section>
+
+  </main><!-- /main -->
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer">
+    <div class="wrap">
+      <a href="#" class="footer-logo"><span>I</span>NTERNATIONAL <span>F</span>URNISHERS</a>
+      <p class="footer-tagline">Crafting spaces that speak to the soul.<br>Premium furniture since 1998 · Varanasi, India.</p>
+
+      <div class="footer-heading">Navigate</div>
+      <ul class="footer-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#categories">Categories</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+
+      <div class="footer-heading">Categories</div>
+      <ul class="footer-links">
+        <li><a href="https://www.internationalfurnishers.in/Gallery/SubCategory?CategoryId=2">Domestic Furniture</a></li>
+        <li><a href="https://www.internationalfurnishers.in/Gallery/SubCategory?CategoryId=3">Office Furniture</a></li>
+        <li><a href="https://www.internationalfurnishers.in/Product/Product?SubCategoryId=7">Wardrobe</a></li>
+        <li><a href="https://www.internationalfurnishers.in/Product/Product?SubCategoryId=8">Dining Table</a></li>
+        <li><a href="https://www.internationalfurnishers.in/Gallery/SubCategoryDetails?Category=Domestic%20Furniture&SubCategoryId=9">Sofa</a></li>
+        <li><a href="https://www.internationalfurnishers.in/Gallery/SubCategory?CategoryId=4">Mattress</a></li>
+      </ul>
+
+      <div class="footer-rule"></div>
+      <div class="footer-bottom">
+        <div class="footer-legal">© 2026 <span>International Furnishers</span>. All rights reserved.</div>
+        <div class="footer-soc-row">
+          <a href="#" class="footer-soc" aria-label="Facebook">f</a>
+          <a href="#" class="footer-soc" aria-label="Instagram">ig</a>
+          <a href="#" class="footer-soc" aria-label="LinkedIn">in</a>
+        </div>
       </div>
     </div>
   </footer>
 
+  <!-- ── BOTTOM ACTION BAR ── -->
+  <div class="bar" role="navigation" aria-label="Quick actions">
+    <div class="bar-inner">
+      <a href="tel:+919198126666" class="bar-btn b-call">
+        <div class="bar-ico">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+        </div>
+        <span>Call</span>
+      </a>
+      <div class="bar-sep"></div>
+      <a href="https://maps.google.com/?q=D-35/76+Jangamwadi+Varanasi" target="_blank" rel="noopener" class="bar-btn b-dir">
+        <div class="bar-ico">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+        </div>
+        <span>Directions</span>
+      </a>
+      <a href="mailto:InternatinalFurnishers@gmail.com" class="bar-btn b-mail">
+        <div class="bar-ico">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2 7 12 13 22 7"/></svg>
+        </div>
+        <span>Email</span>
+      </a>
+      <a href="#categories" class="bar-btn b-cat">
+        <div class="bar-ico">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        </div>
+        <span>Browse</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── LIGHTBOX / BOTTOM SHEET ── -->
+  <div class="lb-backdrop" id="lbBackdrop" onclick="closeLb()"></div>
+  <div class="lb-sheet" id="lbSheet">
+    <div class="lb-handle"></div>
+    <div class="lb-title" id="lbTitle"></div>
+    <div class="lb-desc" id="lbDesc"></div>
+    <div class="lb-actions">
+      <a href="#" class="btn btn-walnut btn-sm" id="lbCta" target="_blank" rel="noopener"><span>View Collection</span></a>
+      <button class="btn btn-outline btn-sm" onclick="closeLb()"><span>Close</span></button>
+    </div>
+  </div>
+
   <script>
+    /* ── Nav scroll ── */
     const nav = document.getElementById('mainNav');
-    const topbarH = document.querySelector('.topbar').offsetHeight;
     window.addEventListener('scroll', () => {
-      if (window.scrollY > topbarH) {
-        nav.style.top = '0';
-        nav.classList.add('scrolled');
-      } else {
-        nav.style.top = topbarH + 'px';
-        nav.classList.remove('scrolled');
-      }
-    });
+      nav.classList.toggle('scrolled', window.scrollY > 10);
+    }, { passive: true });
 
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-    }, { threshold: 0.12 });
-    reveals.forEach(el => observer.observe(el));
-
+    /* ── Parallax hero ── */
     window.addEventListener('scroll', () => {
       const bg = document.getElementById('heroBg');
-      if (bg) bg.style.transform = `scale(1) translateY(${window.scrollY * 0.3}px)`;
-    });
+      if (bg) bg.style.transform = `scale(1) translateY(${window.scrollY * 0.22}px)`;
+    }, { passive: true });
+
+    /* ── Reveal on scroll ── */
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08 });
+    reveals.forEach(el => obs.observe(el));
+
+    /* ── Tab switches ── */
+    function switchAbout(id, btn) {
+      document.querySelectorAll('.about-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.about-tab').forEach(b => b.classList.remove('active'));
+      document.getElementById('about-' + id).classList.add('active');
+      btn.classList.add('active');
+    }
+    function switchLoc(id, btn) {
+      document.querySelectorAll('.loc-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.loc-tab').forEach(b => b.classList.remove('active'));
+      document.getElementById('loc-' + id).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    /* ── Timings ── */
+    const TIMINGS = [
+      { day: 'Monday',    open: '10:00 AM', close: '7:00 PM' },
+      { day: 'Tuesday',   open: '10:00 AM', close: '7:00 PM' },
+      { day: 'Wednesday', open: '10:00 AM', close: '7:00 PM' },
+      { day: 'Thursday',  open: '10:00 AM', close: '7:00 PM' },
+      { day: 'Friday',    open: '10:00 AM', close: '7:00 PM' },
+      { day: 'Saturday',  open: '10:00 AM', close: '7:00 PM' },
+      { day: 'Sunday',    open: null,        close: null },
+    ];
+    function buildTimings() {
+      const today = new Date().getDay(); // 0=Sun
+      const list = document.getElementById('timings-list');
+      if (!list) return;
+      const html = TIMINGS.map((t, i) => {
+        const dayIdx = i === 6 ? 0 : i + 1;
+        const isToday = dayIdx === today;
+        const val = t.open ? `${t.open} – ${t.close}` : '<span class="timing-closed">Closed</span>';
+        return `<div class="timing-row${isToday ? ' today' : ''}">
+          <div class="timing-day">${t.day}${isToday ? ' <span style="font-size:9px;letter-spacing:0.18em;color:var(--walnut-light)">TODAY</span>' : ''}</div>
+          <div class="timing-val">${val}</div>
+        </div>`;
+      }).join('');
+      list.innerHTML = html;
+    }
+    buildTimings();
+
+    /* ── Lightbox ── */
+    function openLb(title, desc, url) {
+      document.getElementById('lbTitle').textContent = title;
+      document.getElementById('lbDesc').textContent = desc;
+      document.getElementById('lbCta').href = url || '#';
+      document.getElementById('lbBackdrop').classList.add('open');
+      document.getElementById('lbSheet').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLb() {
+      document.getElementById('lbBackdrop').classList.remove('open');
+      document.getElementById('lbSheet').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    /* swipe down to close sheet */
+    let touchStartY = 0;
+    document.getElementById('lbSheet').addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: true });
+    document.getElementById('lbSheet').addEventListener('touchend', e => {
+      if (e.changedTouches[0].clientY - touchStartY > 60) closeLb();
+    }, { passive: true });
   </script>
 </body>
 </html>
